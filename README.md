@@ -11,6 +11,7 @@ Project พร้อมสอนและทดลองว่า **MCP ทำ�
 | Layer | Implementation |
 |---|---|
 | Database | SQL Server 2022, 120 สถานี, ฝน 161,280 rows, ระดับน้ำ 40,320 rows |
+| Literal SQL dump | `mssql/thaiwater_literal_10080.sql` มี observation เป็น `INSERT ... VALUES` จริงและ join ได้ 10,080 rows |
 | Report | `rpt.vw_hourly_situation`, join 8 objects, 40,320 rows |
 | MCP | Python read-only server, schema discovery และ SELECT จำกัด 500 rows |
 | RAG | ERD, data dictionary, grain, join path, quality codes, business rules, certified SQL |
@@ -35,7 +36,8 @@ thaiwater/
 ├── docker-compose.yml
 ├── mssql/
 │   ├── init.sh
-│   └── init.sql
+│   ├── init.sql
+│   └── thaiwater_literal_10080.sql
 ├── mcp/
 │   ├── Dockerfile
 │   ├── requirements.txt
@@ -48,6 +50,8 @@ thaiwater/
     ├── README.md
     └── manifest.csv
 ```
+
+หากต้องการเห็นข้อมูลเป็นรายแถวโดยไม่ใช้ SQL data generator ให้เปิดหรือรัน `mssql/thaiwater_literal_10080.sql` ซึ่งเป็น standalone database dump มี rainfall 40,320 rows, water level 10,080 rows และ joined report 10,080 rows
 
 ## Learning outcome
 
@@ -70,4 +74,3 @@ thaiwater/
 - [Langflow MCP client](https://docs.langflow.org/mcp-client)
 - [Langflow Vector RAG](https://docs.langflow.org/next/chat-with-rag)
 - [Langflow Docker deployment](https://docs.langflow.org/deployment-docker)
-
