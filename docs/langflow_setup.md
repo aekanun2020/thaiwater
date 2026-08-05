@@ -42,8 +42,8 @@ docker compose exec mssql /opt/mssql-tools18/bin/sqlcmd \
 
 เลือก template **Vector Store RAG** แล้วใช้ฝั่ง Load Data Flow:
 
-1. `Read File`: อัปโหลด `rag/thaiwater_semantic_contract.md`
-2. `Split Text`: chunk size 1,200, overlap 150
+1. `Read File`: อัปโหลด Markdown ทั้งหมดใน `rag/` ได้แก่ `thaiwater_semantic_contract.md`, `erd.md` และ `data_dictionary.md`
+2. `Split Text`: chunk size 1,200, overlap 150 และเก็บชื่อไฟล์เป็น metadata
 3. `OpenAI Embeddings`: model `${OPENAI_EMBEDDING_MODEL}`
 4. `Chroma` หรือ vector store ที่มีใน Langflow: collection `thaiwater_semantic_contract`
 5. Run component ที่ vector store เพื่อ ingest
@@ -108,4 +108,3 @@ Repository ต้นทางว่าง ณ วันที่ตรวจ จ
 7. เพิ่ม certified query และ expected result ใน acceptance test
 
 ห้ามถือว่าชื่อ field คล้ายกันแล้วความหมายเหมือนกัน
-

@@ -38,7 +38,9 @@ def station_rows():
         yield (
             f"({station_id},'TW{station_id:03d}',N'สถานีสาธิต {station_id:03d}',"
             f"'{((station_id - 1) % 6) + 1:02d}','{provinces[(station_id - 1) % 12]}',"
-            f"'{agencies[(station_id - 1) % 4]}','MSL1915')"
+            f"'{agencies[(station_id - 1) % 4]}',"
+            f"{6 + ((station_id * 83) % 1400) / 100:.6f},"
+            f"{98 + ((station_id * 47) % 700) / 100:.6f},'MSL1915')"
         )
 
 
@@ -46,7 +48,7 @@ def rule_rows():
     for station_id in range(1, STATIONS + 1):
         riverbed = 4 + (station_id % 20) * 0.1
         bank = 8 + (station_id % 20) * 0.1
-        yield f"({station_id},'{sql_dt(START)}',{riverbed:.3f},{bank:.3f},'THAIWATER-PUBLIC-CRITERIA-LAB-1')"
+        yield f"({station_id},'{sql_dt(START)}',NULL,{riverbed:.3f},{bank:.3f},'THAIWATER-PUBLIC-CRITERIA-LAB-1')"
 
 
 def rainfall_rows():
@@ -107,8 +109,8 @@ CREATE TABLE dbo.agency(agency_code varchar(10) PRIMARY KEY,agency_name_th nvarc
 CREATE TABLE dbo.basin(basin_code char(2) PRIMARY KEY,basin_name_th nvarchar(100) NOT NULL);
 CREATE TABLE dbo.province(province_code char(2) PRIMARY KEY,province_name_th nvarchar(100) NOT NULL);
 CREATE TABLE dbo.quality_flag(quality_code char(1) PRIMARY KEY,quality_name_th nvarchar(100) NOT NULL,usable_for_report bit NOT NULL);
-CREATE TABLE dbo.station(station_id int PRIMARY KEY,station_code varchar(20) UNIQUE NOT NULL,station_name_th nvarchar(200) NOT NULL,basin_code char(2) REFERENCES dbo.basin,province_code char(2) REFERENCES dbo.province,agency_code varchar(10) REFERENCES dbo.agency,vertical_datum varchar(20) NOT NULL);
-CREATE TABLE dbo.station_rule(station_id int REFERENCES dbo.station,effective_from datetime2(0),riverbed_level_m_msl decimal(7,3),bank_level_m_msl decimal(7,3),rule_version varchar(40),PRIMARY KEY(station_id,effective_from));
+CREATE TABLE dbo.station(station_id int PRIMARY KEY,station_code varchar(20) UNIQUE NOT NULL,station_name_th nvarchar(200) NOT NULL,basin_code char(2) REFERENCES dbo.basin,province_code char(2) REFERENCES dbo.province,agency_code varchar(10) REFERENCES dbo.agency,latitude decimal(9,6) NOT NULL,longitude decimal(9,6) NOT NULL,vertical_datum varchar(20) NOT NULL);
+CREATE TABLE dbo.station_rule(station_id int REFERENCES dbo.station,effective_from datetime2(0),effective_to datetime2(0) NULL,riverbed_level_m_msl decimal(7,3),bank_level_m_msl decimal(7,3),rule_version varchar(40),PRIMARY KEY(station_id,effective_from));
 CREATE TABLE dbo.rainfall_15min(rainfall_id bigint PRIMARY KEY,station_id int REFERENCES dbo.station,observed_at datetime2(0),rainfall_mm decimal(8,2) NULL,quality_code char(1) REFERENCES dbo.quality_flag,received_at datetime2(0),UNIQUE(station_id,observed_at));
 CREATE TABLE dbo.water_level_hourly(water_level_id bigint PRIMARY KEY,station_id int REFERENCES dbo.station,observed_at datetime2(0),water_level_m_msl decimal(7,3) NULL,discharge_cms decimal(10,2) NULL,vertical_datum varchar(20),quality_code char(1) REFERENCES dbo.quality_flag,received_at datetime2(0),UNIQUE(station_id,observed_at));
 GO
@@ -155,8 +157,8 @@ GO
 def main():
     with OUTPUT.open("w", encoding="utf-8", newline="\n") as handle:
         handle.write(HEADER)
-        batches(handle, "dbo.station", "station_id,station_code,station_name_th,basin_code,province_code,agency_code,vertical_datum", station_rows())
-        batches(handle, "dbo.station_rule", "station_id,effective_from,riverbed_level_m_msl,bank_level_m_msl,rule_version", rule_rows())
+        batches(handle, "dbo.station", "station_id,station_code,station_name_th,basin_code,province_code,agency_code,latitude,longitude,vertical_datum", station_rows())
+        batches(handle, "dbo.station_rule", "station_id,effective_from,effective_to,riverbed_level_m_msl,bank_level_m_msl,rule_version", rule_rows())
         batches(handle, "dbo.rainfall_15min", "rainfall_id,station_id,observed_at,rainfall_mm,quality_code,received_at", rainfall_rows())
         batches(handle, "dbo.water_level_hourly", "water_level_id,station_id,observed_at,water_level_m_msl,discharge_cms,vertical_datum,quality_code,received_at", level_rows())
         handle.write(VIEW)

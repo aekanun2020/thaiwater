@@ -14,7 +14,7 @@ Project พร้อมสอนและทดลองว่า **MCP ทำ�
 | Literal SQL dump | `mssql/thaiwater_literal_10080.sql` มี observation เป็น `INSERT ... VALUES` จริงและ join ได้ 10,080 rows |
 | Report | `rpt.vw_hourly_situation`, join 8 objects, 40,320 rows |
 | MCP | Python read-only server, schema discovery และ SELECT จำกัด 500 rows |
-| RAG | ERD, data dictionary, grain, join path, quality codes, business rules, certified SQL |
+| RAG | Physical ERD, complete data dictionary, grain, join path, quality codes, business rules, certified SQL |
 | Langflow | Docker deployment และคู่มือประกอบ Agent ที่ใช้ RAG + MCP tools |
 | Safety | read-only SQL gate, result cap, synthetic-data disclosure, cardinality tests |
 
@@ -43,6 +43,8 @@ thaiwater/
 │   ├── requirements.txt
 │   └── server.py
 ├── rag/thaiwater_semantic_contract.md
+├── rag/erd.md
+├── rag/data_dictionary.md
 ├── prompts/system_prompt.md
 ├── docs/langflow_setup.md
 ├── tests/acceptance.md
