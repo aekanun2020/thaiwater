@@ -1,82 +1,111 @@
-# ThaiWater Langflow + MCP + RAG + MSSQL Lab
+# ThaiWater MSSQL Dataset and RAG Documentation
 
-Project พร้อมสอนและทดลองว่า **MCP ทำให้ Agent เข้าถึงฐานข้อมูล แต่ RAG ทำให้ Agent เข้าใจฐานข้อมูล** โดยใช้ข้อมูลสังเคราะห์ที่สอดคล้องกับคำศัพท์และเกณฑ์สาธารณะของ ThaiWater
+Repository นี้ส่งมอบข้อมูลสังเคราะห์สำหรับ Microsoft SQL Server พร้อมเอกสารอธิบายโครงสร้างและความหมายของข้อมูล เพื่อให้ผู้ทำ project นำไปเชื่อมกับระบบของตนเอง
 
-> เริ่มที่ [RUNBOOK.md](RUNBOOK.md): มีขั้นตอน clone, ตั้ง `.env`, เปิดระบบ, verify, ประกอบ Langflow flow และรัน literal SQL
+> ข้อมูลทั้งหมดเป็นข้อมูลสังเคราะห์ ไม่ใช่ข้อมูลจริงหรือ schema ภายในของ ThaiWater, สสน. หรือ สทนช.
 
-## Repository status
+## ไฟล์ส่งมอบ
 
-ตอน clone จาก `https://github.com/aekanun2020/thaiwater.git` เมื่อ 2026-08-05 repository ไม่มี commit และไม่มี dataset Project นี้จึงสร้างข้อมูลสังเคราะห์ใน repo แทน และเตรียม `data/` สำหรับรับข้อมูลจริงในอนาคต
-
-## สิ่งที่ได้
-
-| Layer | Implementation |
+| File | Purpose |
 |---|---|
-| Database | SQL Server 2022, 120 สถานี, ฝน 161,280 rows, ระดับน้ำ 40,320 rows |
-| Literal SQL dump | `mssql/thaiwater_literal_10080.sql` มี observation เป็น `INSERT ... VALUES` จริงและ join ได้ 10,080 rows |
-| Report | `rpt.vw_hourly_situation`, join 8 objects, 40,320 rows |
-| MCP | Python read-only server, schema discovery และ SELECT จำกัด 500 rows |
-| RAG | Physical ERD, complete data dictionary, grain, join path, quality codes, business rules, certified SQL |
-| Langflow | Docker deployment และคู่มือประกอบ Agent ที่ใช้ RAG + MCP tools |
-| Safety | read-only SQL gate, result cap, synthetic-data disclosure, cardinality tests |
+| `mssql/init.sql` | สร้างฐาน `ThaiWaterLab` และปั่น observation ด้วย SQL ให้ report 40,320 rows |
+| `mssql/thaiwater_literal_10080.sql` | Standalone SQL dump ที่มี `INSERT ... VALUES` จริงและ report 10,080 rows |
+| `scripts/generate_literal_sql.py` | สร้าง literal SQL dump ซ้ำแบบ deterministic |
+| `rag/erd.md` | Physical ERD, keys, cardinality, grain และ join path |
+| `rag/data_dictionary.md` | Data Dictionary ครบทุก table/view และทุก column |
+| `rag/thaiwater_semantic_contract.md` | Business rules, quality codes และ certified SQL |
+| `tests/acceptance.md` | SQL validation และ expected row counts |
 
-## Quick start
+## วิธีรันแบบแนะนำ: Literal SQL dump
+
+ไฟล์ `mssql/thaiwater_literal_10080.sql` รันได้เดี่ยว ไม่ต้องรันไฟล์อื่นก่อน
+
+### SQL Server Management Studio หรือ Azure Data Studio
+
+1. เชื่อม Microsoft SQL Server ด้วย account ที่มีสิทธิ์ `CREATE DATABASE`
+2. เปิด `mssql/thaiwater_literal_10080.sql`
+3. เลือก database `master`
+4. กด Execute
+5. รอ query ท้ายไฟล์แสดงจำนวน 40,320 / 10,080 / 10,080
+
+ไฟล์จะสร้าง database `ThaiWaterLiteral`
+
+```sql
+USE ThaiWaterLiteral;
+
+SELECT COUNT_BIG(*) AS joined_rows
+FROM dbo.vw_hourly_situation;
+
+SELECT TOP (100) *
+FROM dbo.vw_hourly_situation
+ORDER BY report_hour, station_code;
+```
+
+### ใช้ sqlcmd
 
 ```bash
-make setup
-# แก้ .env: รหัสผ่านและ OPENAI_API_KEY
-make start
-make verify
+sqlcmd -S localhost -U sa -P 'YOUR_PASSWORD' -C \
+  -i mssql/thaiwater_literal_10080.sql
 ```
 
-จากนั้นเปิด `http://localhost:7860` และทำตาม [docs/langflow_setup.md](docs/langflow_setup.md)
+ผลที่คาดหวัง:
 
-## โครงสร้าง
+| Object | Rows |
+|---|---:|
+| `dbo.rainfall_15min` | 40,320 |
+| `dbo.water_level_hourly` | 10,080 |
+| `dbo.vw_hourly_situation` | 10,080 |
 
-```text
-thaiwater/
-├── RUNBOOK.md
-├── Makefile
-├── docker-compose.yml
-├── mssql/
-│   ├── init.sh
-│   ├── init.sql
-│   └── thaiwater_literal_10080.sql
-├── mcp/
-│   ├── Dockerfile
-│   ├── requirements.txt
-│   └── server.py
-├── rag/thaiwater_semantic_contract.md
-├── rag/erd.md
-├── rag/data_dictionary.md
-├── prompts/system_prompt.md
-├── docs/langflow_setup.md
-├── tests/acceptance.md
-└── data/
-    ├── README.md
-    └── manifest.csv
+## วิธีรันชุดข้อมูลขนาดใหญ่
+
+`mssql/init.sql` สร้าง database `ThaiWaterLab` และใช้ set-based SQL สร้างข้อมูลจำนวนมาก
+
+```bash
+sqlcmd -S localhost -U sa -P 'YOUR_PASSWORD' -C \
+  -i mssql/init.sql
 ```
 
-หากต้องการเห็นข้อมูลเป็นรายแถวโดยไม่ใช้ SQL data generator ให้เปิดหรือรัน `mssql/thaiwater_literal_10080.sql` ซึ่งเป็น standalone database dump มี rainfall 40,320 rows, water level 10,080 rows และ joined report 10,080 rows
+ผลที่คาดหวัง:
 
-## Learning outcome
+| Object | Rows |
+|---|---:|
+| `fact.rainfall_15min` | 161,280 |
+| `fact.water_level_hourly` | 40,320 |
+| `rpt.vw_hourly_situation` | 40,320 |
 
-ผู้เรียนจะเห็น failure mode สำคัญ:
+ตรวจผล:
 
-- SQL รันผ่านแต่ join ผิด grain ทำให้ยอดซ้ำ 4 เท่า
-- `NULL` ถูกเข้าใจผิดเป็นฝนไม่ตก
-- `received_at` ถูกใช้แทน `observed_at`
-- ระดับน้ำถูกเทียบกับตลิ่งทั้งที่ datum คนละระบบ
-- quality code ถูกเดาจากชื่อย่อ
-- threshold ปัจจุบันถูกใช้กับข้อมูลย้อนหลังโดยไม่ทำ effective-date join
+```sql
+USE ThaiWaterLab;
 
-รายละเอียดทั้งหมดอยู่ใน semantic contract ซึ่งควรถูก ingest เข้า RAG ก่อนใช้งาน Agent
+SELECT COUNT_BIG(*) AS joined_rows
+FROM rpt.vw_hourly_situation;
+
+SELECT water_situation, COUNT_BIG(*) AS station_hours
+FROM rpt.vw_hourly_situation
+WHERE is_complete = 1
+GROUP BY water_situation
+ORDER BY station_hours DESC;
+```
+
+## เอกสารที่ต้องอ่านก่อนใช้ข้อมูล
+
+1. `rag/erd.md` — ตารางเชื่อมกันอย่างไรและแต่ละ table มี grain อะไร
+2. `rag/data_dictionary.md` — column หมายถึงอะไร ใช้หน่วยใด และ nullable หรือไม่
+3. `rag/thaiwater_semantic_contract.md` — business rule, quality policy และ certified query
+
+ประเด็นสำคัญคือ ต้อง aggregate ฝน 15 นาทีเป็นรายชั่วโมงก่อน join กับระดับน้ำรายชั่วโมง มิฉะนั้นระดับน้ำจะถูกทำซ้ำสี่เท่า
+
+## สร้าง Literal SQL ใหม่
+
+```bash
+python3 scripts/generate_literal_sql.py
+```
+
+คำสั่งจะเขียน `mssql/thaiwater_literal_10080.sql` ใหม่ด้วยข้อมูล deterministic ชุดเดิม
 
 ## Public references
 
 - [ThaiWater](https://www.thaiwater.net/)
 - [ThaiWater Mobile data scope](https://www.thaiwater.net/mobile)
 - [ThaiWater data standards](https://standard.thaiwater.net/docs/)
-- [Langflow MCP client](https://docs.langflow.org/mcp-client)
-- [Langflow Vector RAG](https://docs.langflow.org/next/chat-with-rag)
-- [Langflow Docker deployment](https://docs.langflow.org/deployment-docker)

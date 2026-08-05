@@ -1,6 +1,6 @@
 # Physical ERD
 
-เอกสารนี้อธิบาย physical structure ของฐานหลัก `ThaiWaterLab` ที่ MCP เชื่อมต่อ ข้อมูลทั้งหมดเป็นข้อมูลสังเคราะห์
+เอกสารนี้อธิบาย physical structure ของฐานหลัก `ThaiWaterLab` ข้อมูลทั้งหมดเป็นข้อมูลสังเคราะห์
 
 ## Schema overview
 
@@ -117,7 +117,7 @@ flowchart LR
 
 `mssql/thaiwater_literal_10080.sql` เป็น standalone demonstration database ชื่อ `ThaiWaterLiteral` และใช้ `dbo` เพื่อให้เปิดไฟล์เดียวแล้วรันได้ ความหมายเทียบกับฐานหลักดังนี้:
 
-| MCP database object | Literal dump object |
+| Main database object | Literal dump object |
 |---|---|
 | `dim.agency` | `dbo.agency` |
 | `dim.basin` | `dbo.basin` |
@@ -129,5 +129,4 @@ flowchart LR
 | `fact.water_level_hourly` | `dbo.water_level_hourly` |
 | `rpt.vw_hourly_situation` | `dbo.vw_hourly_situation` |
 
-MCP ใน `docker-compose.yml` เชื่อม `ThaiWaterLab` ไม่ได้เชื่อม `ThaiWaterLiteral` โดยอัตโนมัติ
-
+`ThaiWaterLab` และ `ThaiWaterLiteral` เป็นคนละ database ต้องเลือกชื่อฐานให้ตรงกับชุดข้อมูลที่รัน

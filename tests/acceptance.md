@@ -1,40 +1,68 @@
-# Acceptance tests
+# SQL Acceptance Tests
 
-## Infrastructure
+## Expected row counts
 
-| Test | Expected |
-|---|---|
-| `docker compose ps` | `mssql`, `mssql-mcp`, `langflow` healthy/running; init exited 0 |
-| MSSQL report count | 40,320 rows |
-| MCP health | HTTP 200 จาก `http://localhost:8000/health` |
-| MCP unsafe query | `DELETE`, `DROP`, multi-statement และ comment ถูกปฏิเสธ |
+### `ThaiWaterLab`
 
-## Agent behavior
+```sql
+USE ThaiWaterLab;
 
-| Prompt | Expected behavior |
-|---|---|
-| rainfall_mm หมายถึงอะไร | ใช้ RAG; ตอบ mm ต่อช่วง 15 นาทีและ NULL ไม่ใช่ศูนย์ |
-| สรุปข้อมูลรายชั่วโมง | ใช้ certified view หรือ aggregate rain ก่อน join |
-| สถานการณ์ล้นตลิ่งมีกี่ station-hour | ค้น rule, query `water_situation='OVER_BANK'`, ระบุ synthetic/time range |
-| ใช้เฉพาะข้อมูลทางการ | filter `is_complete=1` |
-| ใช้ received_at เป็นเวลาวัด | ปฏิเสธสมมติฐานและอธิบาย observed_at |
-| แสดงทั้งหมด 40,320 rows | ไม่ดึงทั้งหมดผ่าน MCP; aggregate หรือแบ่งหน้า เพราะ tool cap 500 |
-| แก้ quality flag | ปฏิเสธเพราะ MCP read-only |
+SELECT 'rainfall_15min' AS object_name, COUNT_BIG(*) AS row_count
+FROM fact.rainfall_15min
+UNION ALL
+SELECT 'water_level_hourly', COUNT_BIG(*)
+FROM fact.water_level_hourly
+UNION ALL
+SELECT 'joined_report', COUNT_BIG(*)
+FROM rpt.vw_hourly_situation;
+```
+
+Expected: 161,280 / 40,320 / 40,320
+
+### `ThaiWaterLiteral`
+
+```sql
+USE ThaiWaterLiteral;
+
+SELECT 'rainfall_15min' AS object_name, COUNT_BIG(*) AS row_count
+FROM dbo.rainfall_15min
+UNION ALL
+SELECT 'water_level_hourly', COUNT_BIG(*)
+FROM dbo.water_level_hourly
+UNION ALL
+SELECT 'joined_report', COUNT_BIG(*)
+FROM dbo.vw_hourly_situation;
+```
+
+Expected: 40,320 / 10,080 / 10,080
 
 ## Cardinality guard
 
-Query ต่อไปนี้ต้องคืน 0 rows:
+Query ต้องคืนศูนย์แถว:
 
 ```sql
-SELECT station_code,report_hour,COUNT_BIG(*) n
+SELECT station_code, report_hour, COUNT_BIG(*) AS row_count
 FROM rpt.vw_hourly_situation
-GROUP BY station_code,report_hour
-HAVING COUNT_BIG(*)<>1
+GROUP BY station_code, report_hour
+HAVING COUNT_BIG(*) <> 1;
 ```
 
-Query ต่อไปนี้ต้องคืน 40,320:
+## Required data-quality cases
+
+Query แต่ละรายการต้องมีอย่างน้อยหนึ่งแถว:
 
 ```sql
-SELECT COUNT_BIG(*) AS joined_rows FROM rpt.vw_hourly_situation
+SELECT TOP (1) * FROM fact.rainfall_15min WHERE rainfall_mm IS NULL;
+SELECT TOP (1) * FROM fact.rainfall_15min WHERE quality_code = 'S';
+SELECT TOP (1) * FROM fact.water_level_hourly WHERE vertical_datum <> 'MSL1915';
+SELECT TOP (1) * FROM rpt.vw_hourly_situation WHERE is_complete = 0;
 ```
+
+## Regenerate literal dump
+
+```bash
+python3 scripts/generate_literal_sql.py
+```
+
+หลัง generate จำนวน literal tuple และ expected counts ต้องไม่เปลี่ยน
 

@@ -1,6 +1,6 @@
 # ThaiWater Lab Semantic Contract
 
-เอกสารนี้เป็น knowledge base สำหรับ RAG ของ Agent ไม่ใช่ schema จริงของ ThaiWater, สสน. หรือ สทนช. เกณฑ์สาธารณะปรับจากเว็บไซต์มาตรฐานข้อมูลน้ำ ส่วน schema และข้อมูลเป็นข้อมูลสังเคราะห์ของ lab
+เอกสารนี้เป็น semantic contract สำหรับนำเข้า RAG ไม่ใช่ schema จริงของ ThaiWater, สสน. หรือ สทนช. เกณฑ์สาธารณะปรับจากเว็บไซต์มาตรฐานข้อมูลน้ำ ส่วน schema และข้อมูลเป็นข้อมูลสังเคราะห์ของ lab
 
 ## Dataset scope
 
@@ -62,7 +62,7 @@ erDiagram
 | `S` | น่าสงสัย | 0 |
 | `M` | ไม่มีข้อมูล | 0 |
 
-การอนุญาต `P` เป็น policy ของ lab ไม่ใช่ข้อเท็จจริงที่ Agent ควรเดาจากตัวอักษร
+การอนุญาต `P` เป็น policy ของ lab ไม่ใช่ความหมายที่ควรอนุมานจากตัวอักษร
 
 ## Business rules
 
@@ -114,4 +114,3 @@ GROUP BY is_complete
 - ThaiWater: https://www.thaiwater.net/
 - ThaiWater Mobile data scope: https://www.thaiwater.net/mobile
 - Water data standards: https://standard.thaiwater.net/docs/
-

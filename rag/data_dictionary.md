@@ -115,7 +115,7 @@ Grain: หนึ่งแถวต่อสถานีต่อชั่วโ�
 
 ## `rpt.vw_hourly_situation`
 
-Grain: หนึ่งแถวต่อสถานีต่อชั่วโมง เป็น certified access path สำหรับ Agent
+Grain: หนึ่งแถวต่อสถานีต่อชั่วโมง เป็น certified access path สำหรับการทำรายงาน
 
 | Column | Derived from | Null possible | ความหมาย/หน่วย |
 |---|---|---:|---|
@@ -136,4 +136,3 @@ Grain: หนึ่งแถวต่อสถานีต่อชั่วโ�
 | `is_complete` | quality and completeness rules | No | `1` เมื่อฝนครบ 4 ค่า ระดับน้ำใช้ได้ และ datum ตรง |
 
 Logical unique key คือ `(station_code, report_hour)` ผลตรวจ cardinality ต้องไม่มี key ใดมากกว่าหนึ่งแถว
-
