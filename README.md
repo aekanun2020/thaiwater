@@ -2,6 +2,8 @@
 
 Project พร้อมสอนและทดลองว่า **MCP ทำให้ Agent เข้าถึงฐานข้อมูล แต่ RAG ทำให้ Agent เข้าใจฐานข้อมูล** โดยใช้ข้อมูลสังเคราะห์ที่สอดคล้องกับคำศัพท์และเกณฑ์สาธารณะของ ThaiWater
 
+> เริ่มที่ [RUNBOOK.md](RUNBOOK.md): มีขั้นตอน clone, ตั้ง `.env`, เปิดระบบ, verify, ประกอบ Langflow flow และรัน literal SQL
+
 ## Repository status
 
 ตอน clone จาก `https://github.com/aekanun2020/thaiwater.git` เมื่อ 2026-08-05 repository ไม่มี commit และไม่มี dataset Project นี้จึงสร้างข้อมูลสังเคราะห์ใน repo แทน และเตรียม `data/` สำหรับรับข้อมูลจริงในอนาคต
@@ -21,10 +23,10 @@ Project พร้อมสอนและทดลองว่า **MCP ทำ�
 ## Quick start
 
 ```bash
-cp .env.example .env
-# ใส่รหัสผ่านและ OPENAI_API_KEY
-docker compose up --build -d
-docker compose ps
+make setup
+# แก้ .env: รหัสผ่านและ OPENAI_API_KEY
+make start
+make verify
 ```
 
 จากนั้นเปิด `http://localhost:7860` และทำตาม [docs/langflow_setup.md](docs/langflow_setup.md)
@@ -33,6 +35,8 @@ docker compose ps
 
 ```text
 thaiwater/
+├── RUNBOOK.md
+├── Makefile
 ├── docker-compose.yml
 ├── mssql/
 │   ├── init.sh
