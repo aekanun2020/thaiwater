@@ -91,9 +91,9 @@ HEADER = r"""/* Standalone literal ThaiWater-aligned training dataset.
    All data is synthetic and must not be represented as real ThaiWater data. */
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
-IF DB_ID(N'ThaiWaterLiteral') IS NULL CREATE DATABASE ThaiWaterLiteral;
+IF DB_ID(N'thaiwater') IS NULL CREATE DATABASE thaiwater;
 GO
-USE ThaiWaterLiteral;
+USE thaiwater;
 GO
 DROP VIEW IF EXISTS dbo.vw_hourly_situation;
 DROP TABLE IF EXISTS dbo.water_level_hourly;

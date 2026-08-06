@@ -1,6 +1,8 @@
 # Data landing zone
 
-Repository ต้นทางไม่มี dataset ณ วันที่ 2026-08-05 ชุดเริ่มต้นจึงสร้างข้อมูลสังเคราะห์จาก `mssql/init.sql`
+ฐาน `thaiwater` ปัจจุบันใช้ข้อมูลสังเคราะห์ที่สร้างแบบ deterministic โดย `scripts/generate_literal_sql.py` และส่งมอบเป็น `mssql/thaiwater_literal_10080.sql` ไม่มีข้อมูลจริงอยู่ใน repository
+
+ชุดข้อมูลที่ติดตั้งประกอบด้วยสถานี 120 แห่ง ข้อมูลฝน 15 นาที 40,320 แถว และข้อมูลระดับน้ำรายชั่วโมง 10,080 แถว ในช่วง 21–24 กรกฎาคม 2026
 
 เมื่อเพิ่มข้อมูลจริงให้ใช้โครงสร้าง:
 
@@ -12,4 +14,3 @@ data/
 ```
 
 ก่อน ingest ต้องเพิ่ม field mapping, unit, timezone, missing-value convention, key และ quality policy ลงใน `rag/thaiwater_semantic_contract.md`
-

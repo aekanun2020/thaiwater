@@ -1,3 +1,2 @@
 dataset_id,source_url,retrieved_at,sha256,license,data_owner,status
-synthetic_lab,repository_generated,2026-08-05,,training_only,repository,generated_by_mssql_init
-
+synthetic_lab,repository_generated,2026-08-05,,training_only,repository,generated_by_literal_sql

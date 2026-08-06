@@ -1,45 +1,45 @@
-# Complete Data Dictionary
+# Data Dictionary — `thaiwater`
 
-Data dictionary นี้ตรงกับ `mssql/init.sql` และฐาน `ThaiWaterLab` ข้อมูลทุกแถวเป็นข้อมูลสังเคราะห์
+เอกสารนี้ตรงกับ metadata ของฐาน `thaiwater` ที่สร้างจาก `mssql/thaiwater_literal_10080.sql` ทุก object อยู่ใน schema `dbo`
 
-## `dim.agency`
+> `Null` ด้านล่างหมายถึงข้อกำหนดทางกายภาพของ SQL Server ไม่ใช่เพียงค่าที่พบในข้อมูลปัจจุบัน
+
+## `dbo.agency`
 
 Grain: หนึ่งแถวต่อหน่วยงานเจ้าของข้อมูล
 
 | Column | SQL type | Null | Key | ความหมาย |
 |---|---|---:|---|---|
-| `agency_code` | `varchar(10)` | No | PK | รหัสหน่วยงานภายใน lab |
-| `agency_name_th` | `nvarchar(200)` | No | | ชื่อหน่วยงานภาษาไทยพร้อมข้อความกำกับว่าข้อมูลสังเคราะห์ |
+| `agency_code` | `varchar(10)` | No | PK | รหัสหน่วยงานภายในชุดเรียน |
+| `agency_name_th` | `nvarchar(200)` | No | | ชื่อหน่วยงานภาษาไทย |
 
-## `dim.basin`
+## `dbo.basin`
 
 Grain: หนึ่งแถวต่อลุ่มน้ำสังเคราะห์
 
 | Column | SQL type | Null | Key | ความหมาย |
 |---|---|---:|---|---|
-| `basin_code` | `char(2)` | No | PK | รหัสลุ่มน้ำใน lab ห้ามอนุมานว่าเป็นรหัสทางการ |
+| `basin_code` | `char(2)` | No | PK | รหัสลุ่มน้ำในชุดเรียน ไม่ใช่รหัสทางการ |
 | `basin_name_th` | `nvarchar(100)` | No | | ชื่อลุ่มน้ำสังเคราะห์ |
 
-## `dim.province`
+## `dbo.province`
 
 Grain: หนึ่งแถวต่อจังหวัดสังเคราะห์
 
 | Column | SQL type | Null | Key | ความหมาย |
 |---|---|---:|---|---|
-| `province_code` | `char(2)` | No | PK | รหัสจังหวัดใน lab ห้ามนำไป mapping ระบบอื่นโดยไม่มี crosswalk |
+| `province_code` | `char(2)` | No | PK | รหัสจังหวัดในชุดเรียน |
 | `province_name_th` | `nvarchar(100)` | No | | ชื่อจังหวัดสังเคราะห์ |
 
-## `dim.quality_flag`
+## `dbo.quality_flag`
 
 Grain: หนึ่งแถวต่อ quality code
 
 | Column | SQL type | Null | Key | ความหมาย |
 |---|---|---:|---|---|
-| `quality_code` | `char(1)` | No | PK | รหัสสถานะคุณภาพ observation |
+| `quality_code` | `char(1)` | No | PK | รหัสคุณภาพ observation |
 | `quality_name_th` | `nvarchar(100)` | No | | คำอธิบายสถานะภาษาไทย |
-| `usable_for_report` | `bit` | No | | `1` ให้นำค่าเข้ารายงานของ lab; `0` เก็บเพื่อ data-quality analysis เท่านั้น |
-
-Code values:
+| `usable_for_report` | `bit` | No | | `1` ใช้คำนวณรายงานได้; `0` ใช้วิเคราะห์คุณภาพเท่านั้น |
 
 | Code | Meaning | usable_for_report |
 |---|---|---:|
@@ -48,91 +48,82 @@ Code values:
 | `S` | น่าสงสัย | 0 |
 | `M` | ไม่มีข้อมูล | 0 |
 
-## `dim.station`
+## `dbo.station`
 
 Grain: หนึ่งแถวต่อสถานี
 
 | Column | SQL type | Null | Key | FK target | ความหมาย/หน่วย |
 |---|---|---:|---|---|---|
-| `station_id` | `int` | No | PK | | surrogate key สำหรับ join ภายในฐาน |
-| `station_code` | `varchar(20)` | No | UK | | business key ที่แสดงต่อผู้ใช้ |
+| `station_id` | `int` | No | PK | | Surrogate key |
+| `station_code` | `varchar(20)` | No | UK | | Business key ที่แสดงต่อผู้ใช้ |
 | `station_name_th` | `nvarchar(200)` | No | | | ชื่อสถานีสังเคราะห์ |
-| `basin_code` | `char(2)` | No | FK | `dim.basin.basin_code` | ลุ่มน้ำของสถานี |
-| `province_code` | `char(2)` | No | FK | `dim.province.province_code` | จังหวัดของสถานี |
-| `agency_code` | `varchar(10)` | No | FK | `dim.agency.agency_code` | หน่วยงานเจ้าของข้อมูล |
+| `basin_code` | `char(2)` | Yes | FK | `dbo.basin.basin_code` | ลุ่มน้ำของสถานี |
+| `province_code` | `char(2)` | Yes | FK | `dbo.province.province_code` | จังหวัดของสถานี |
+| `agency_code` | `varchar(10)` | Yes | FK | `dbo.agency.agency_code` | หน่วยงานเจ้าของข้อมูล |
 | `latitude` | `decimal(9,6)` | No | | | ละติจูด WGS84 จำลอง, decimal degrees |
 | `longitude` | `decimal(9,6)` | No | | | ลองจิจูด WGS84 จำลอง, decimal degrees |
-| `vertical_datum` | `varchar(20)` | No | | | datum มาตรฐานของสถานี เช่น `MSL1915` |
+| `vertical_datum` | `varchar(20)` | No | | | Datum มาตรฐาน เช่น `MSL1915` |
 
-## `dim.station_rule`
+## `dbo.station_rule`
 
-Grain: หนึ่งแถวต่อสถานีต่อช่วงเวลาที่ rule version มีผล
+Grain: หนึ่งแถวต่อสถานีต่อกฎที่เริ่มมีผล
 
 | Column | SQL type | Null | Key | FK target | ความหมาย/หน่วย |
 |---|---|---:|---|---|---|
-| `station_id` | `int` | No | PK, FK | `dim.station.station_id` | สถานีที่กฎใช้ |
-| `effective_from` | `datetime2(0)` | No | PK | | เวลาเริ่มใช้แบบ inclusive |
-| `effective_to` | `datetime2(0)` | Yes | | | เวลาสิ้นสุดแบบ exclusive; `NULL` หมายถึงยังมีผล |
-| `riverbed_level_m_msl` | `decimal(7,3)` | No | | | ระดับท้องน้ำ, เมตร MSL |
-| `bank_level_m_msl` | `decimal(7,3)` | No | | | ระดับตลิ่ง, เมตร MSL และต้องสูงกว่าท้องน้ำ |
-| `rule_version` | `varchar(40)` | No | | | รุ่นกฎสำหรับ audit และ reproducibility |
+| `station_id` | `int` | No | PK, FK | `dbo.station.station_id` | สถานีที่กฎใช้; PK บังคับ non-null |
+| `effective_from` | `datetime2(0)` | No | PK | | เวลาเริ่มใช้แบบ inclusive; PK บังคับ non-null |
+| `effective_to` | `datetime2(0)` | Yes | | | เวลาสิ้นสุด; ข้อมูลชุดนี้เป็น `NULL` ทุกแถว |
+| `riverbed_level_m_msl` | `decimal(7,3)` | Yes | | | ระดับท้องน้ำ, เมตร MSL |
+| `bank_level_m_msl` | `decimal(7,3)` | Yes | | | ระดับตลิ่ง, เมตร MSL |
+| `rule_version` | `varchar(40)` | Yes | | | รุ่นกฎสำหรับ audit |
 
-Effective-date join:
+ตัว view ปัจจุบันเลือก rule ด้วย `station_id` และ `observed_at >= effective_from` เพราะข้อมูลมี rule แบบ open-ended เพียงหนึ่งแถวต่อสถานี
 
-```sql
-observation.observed_at >= station_rule.effective_from
-AND (observation.observed_at < station_rule.effective_to
-     OR station_rule.effective_to IS NULL)
-```
-
-## `fact.rainfall_15min`
+## `dbo.rainfall_15min`
 
 Grain: หนึ่งแถวต่อสถานีต่อช่วง 15 นาที
 
 | Column | SQL type | Null | Key | FK target | ความหมาย/หน่วย |
 |---|---|---:|---|---|---|
-| `rainfall_id` | `bigint` | No | PK | | surrogate observation key |
-| `station_id` | `int` | No | UK, FK | `dim.station.station_id` | สถานีที่ตรวจวัด |
-| `observed_at` | `datetime2(0)` | No | UK | | เวลาสิ้นสุดช่วงตรวจวัด เวลาไทย; UK ร่วมกับ station |
-| `rainfall_mm` | `decimal(8,2)` | Yes | | | ฝนในช่วง 15 นาที, mm; `NULL` คือไม่มีข้อมูล ไม่ใช่ศูนย์ |
-| `quality_code` | `char(1)` | No | FK | `dim.quality_flag.quality_code` | สถานะคุณภาพ observation |
-| `received_at` | `datetime2(0)` | No | | | เวลาที่ระบบได้รับข้อมูล ห้ามใช้เป็นเวลาตรวจวัด |
+| `rainfall_id` | `bigint` | No | PK | | Surrogate observation key |
+| `station_id` | `int` | Yes | UK, FK | `dbo.station.station_id` | UK ร่วมกับ `observed_at` |
+| `observed_at` | `datetime2(0)` | Yes | UK | | เวลาสิ้นสุดช่วงตรวจวัด เวลาไทย |
+| `rainfall_mm` | `decimal(8,2)` | Yes | | | ฝนใน 15 นาที, mm; `NULL` คือไม่มีข้อมูล ไม่ใช่ศูนย์ |
+| `quality_code` | `char(1)` | Yes | FK | `dbo.quality_flag.quality_code` | สถานะคุณภาพ |
+| `received_at` | `datetime2(0)` | Yes | | | เวลาที่ระบบได้รับข้อมูล ไม่ใช่เวลาตรวจวัด |
 
-## `fact.water_level_hourly`
+## `dbo.water_level_hourly`
 
 Grain: หนึ่งแถวต่อสถานีต่อชั่วโมง
 
 | Column | SQL type | Null | Key | FK target | ความหมาย/หน่วย |
 |---|---|---:|---|---|---|
-| `water_level_id` | `bigint` | No | PK | | surrogate observation key |
-| `station_id` | `int` | No | UK, FK | `dim.station.station_id` | สถานีที่ตรวจวัด |
-| `observed_at` | `datetime2(0)` | No | UK | | เวลาตรวจวัดรายชั่วโมง เวลาไทย; UK ร่วมกับ station |
-| `water_level_m_msl` | `decimal(7,3)` | Yes | | | ระดับผิวน้ำ, เมตร MSL ตาม datum ในแถว |
-| `discharge_cms` | `decimal(10,2)` | Yes | | | อัตราการไหล, ลูกบาศก์เมตรต่อวินาที (`m3/s`, `cms`) ไม่ใช่ปริมาตร |
-| `vertical_datum` | `varchar(20)` | No | | | datum ของ observation ต้องตรงกับ station ก่อนเทียบ rule |
-| `quality_code` | `char(1)` | No | FK | `dim.quality_flag.quality_code` | สถานะคุณภาพ observation |
-| `received_at` | `datetime2(0)` | No | | | เวลาที่ระบบได้รับข้อมูล |
+| `water_level_id` | `bigint` | No | PK | | Surrogate observation key |
+| `station_id` | `int` | Yes | UK, FK | `dbo.station.station_id` | UK ร่วมกับ `observed_at` |
+| `observed_at` | `datetime2(0)` | Yes | UK | | เวลาตรวจวัดรายชั่วโมง เวลาไทย |
+| `water_level_m_msl` | `decimal(7,3)` | Yes | | | ระดับผิวน้ำ, เมตร MSL |
+| `discharge_cms` | `decimal(10,2)` | Yes | | | อัตราการไหล, m³/s (`cms`) |
+| `vertical_datum` | `varchar(20)` | Yes | | | Datum ของ observation |
+| `quality_code` | `char(1)` | Yes | FK | `dbo.quality_flag.quality_code` | สถานะคุณภาพ |
+| `received_at` | `datetime2(0)` | Yes | | | เวลาที่ระบบได้รับข้อมูล |
 
-## `rpt.vw_hourly_situation`
+## `dbo.vw_hourly_situation`
 
-Grain: หนึ่งแถวต่อสถานีต่อชั่วโมง เป็น certified access path สำหรับการทำรายงาน
+Grain: หนึ่งแถวต่อสถานีต่อชั่วโมง; logical key `(station_code, report_hour)`
 
-| Column | Derived from | Null possible | ความหมาย/หน่วย |
+| Column | SQL type | Metadata null | ความหมาย/หน่วย |
 |---|---|---:|---|
-| `report_hour` | `water_level_hourly.observed_at` | No | ชั่วโมงรายงาน เวลาไทย |
-| `station_code` | `station.station_code` | No | รหัสสถานี |
-| `station_name_th` | `station.station_name_th` | No | ชื่อสถานี |
-| `basin_name_th` | `basin.basin_name_th` | No | ชื่อลุ่มน้ำ |
-| `province_name_th` | `province.province_name_th` | No | ชื่อจังหวัด |
-| `agency_name_th` | `agency.agency_name_th` | No | หน่วยงานเจ้าของข้อมูล |
-| `rainfall_1h_mm` | usable rainfall sum | Yes | ผลรวมฝนที่ policy อนุญาตในชั่วโมงนั้น, mm |
-| `reading_count` | rainfall row count | Yes | จำนวน observation ฝนทั้งหมดในชั่วโมง; ควรเป็น 4 |
-| `usable_count` | usable non-null rainfall count | Yes | จำนวน observation ฝนที่ใช้รายงานได้ |
-| `water_level_m_msl` | water-level fact | Yes | ระดับน้ำ, เมตร MSL |
-| `discharge_cms` | water-level fact | Yes | อัตราการไหล, m3/s |
-| `channel_capacity_percent` | level, riverbed, bank | Yes | `(level-riverbed)/(bank-riverbed)*100` |
-| `water_situation` | quality, datum, capacity | No | `NO_DATA`, `DATUM_MISMATCH`, `CRITICAL_LOW`, `LOW`, `NORMAL`, `HIGH`, `OVER_BANK` |
-| `rule_version` | station rule | No | รุ่นกฎที่ใช้ประเมิน |
-| `is_complete` | quality and completeness rules | No | `1` เมื่อฝนครบ 4 ค่า ระดับน้ำใช้ได้ และ datum ตรง |
+| `report_hour` | `datetime2(0)` | Yes | ชั่วโมงรายงาน เวลาไทย |
+| `station_code` | `varchar(20)` | No | รหัสสถานี |
+| `station_name_th` | `nvarchar(200)` | No | ชื่อสถานี |
+| `basin_name_th` | `nvarchar(100)` | No | ชื่อลุ่มน้ำ |
+| `province_name_th` | `nvarchar(100)` | No | ชื่อจังหวัด |
+| `agency_name_th` | `nvarchar(200)` | No | หน่วยงานเจ้าของข้อมูล |
+| `rainfall_1h_mm` | `decimal(38,2)` | Yes | ผลรวมฝนที่ quality policy อนุญาตในชั่วโมงนั้น, mm |
+| `water_level_m_msl` | `decimal(7,3)` | Yes | ระดับน้ำ, เมตร MSL |
+| `discharge_cms` | `decimal(10,2)` | Yes | อัตราการไหล, m³/s |
+| `channel_capacity_percent` | `decimal(8,2)` | Yes | `(level-riverbed)/(bank-riverbed)*100` |
+| `water_situation` | `varchar(14)` | No | `NO_DATA`, `DATUM_MISMATCH`, `CRITICAL_LOW`, `LOW`, `NORMAL`, `HIGH`, `OVER_BANK` |
+| `is_complete` | `bit` | Yes | `1` เมื่อฝนครบ 4 ค่า ระดับน้ำใช้ได้ และ datum ตรง |
 
-Logical unique key คือ `(station_code, report_hour)` ผลตรวจ cardinality ต้องไม่มี key ใดมากกว่าหนึ่งแถว
+`reading_count`, `usable_count` และ `rule_version` ใช้ภายในนิยาม view แต่ไม่ได้ถูกส่งออกเป็นคอลัมน์ของ view
