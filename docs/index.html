@@ -1,0 +1,1237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Thaiwater Data Model</title>
+<style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
+</head>
+<body>
+<iframe sandbox="allow-scripts" referrerpolicy="no-referrer" title="Thaiwater Data Model" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; &#x27;wasm-unsafe-eval&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src &#x27;unsafe-inline&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;&quot;&gt;
+&lt;title&gt;Thaiwater Data Model&lt;/title&gt;
+&lt;style&gt;:root {
+  color-scheme: light dark;
+  background-color: var(
+    --background,
+    var(--color-background-primary, light-dark(rgb(255 255 255), rgb(24 24 24)))
+  ) !important;
+
+  /* Agent-facing contract; keep in sync with SKILL.md. */
+  --background: var(
+    --color-background-primary,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --card: color-mix(in oklab, var(--foreground) 5%, var(--background));
+  --card-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --popover: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255), rgb(45 45 45))
+  );
+  --popover-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --primary: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --primary-foreground: var(
+    --color-text-inverse,
+    light-dark(rgb(255 255 255), rgb(13 13 13))
+  );
+  --secondary: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255 / 96%), rgb(54 54 54 / 96%))
+  );
+  --secondary-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --muted: color-mix(in srgb, var(--foreground) 10%, transparent);
+  --muted-foreground: var(
+    --color-text-secondary,
+    light-dark(rgb(26 28 31 / 49.4%), rgb(255 255 255 / 49.8%))
+  );
+  --accent: var(
+    --color-background-info,
+    light-dark(rgb(229 242 255), rgb(13 39 63))
+  );
+  --accent-foreground: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --destructive: var(
+    --color-text-warning,
+    light-dark(rgb(226 85 7), rgb(255 133 73))
+  );
+  --border: var(
+    --color-border-secondary,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+  --input: var(
+    --color-border-primary,
+    light-dark(
+      rgb(26 28 31 / 11.8%),
+      color-mix(in oklab, rgb(0 0 0) 10%, transparent)
+    )
+  );
+  --ring: var(
+    --color-ring-primary,
+    light-dark(rgb(51 156 255), rgb(131 195 255 / 76%))
+  );
+  --font-size-base: var(--font-text-md-size, 14px);
+  --red: light-dark(rgb(186 38 35), rgb(250 66 62));
+  --green: light-dark(rgb(0 162 64), rgb(64 201 119));
+  --viz-series-1: var(--primary);
+  --viz-series-2: light-dark(rgb(243 136 59), rgb(245 154 86));
+  --viz-series-3: light-dark(rgb(93 201 119), rgb(116 213 139));
+  --viz-series-4: light-dark(rgb(235 119 177), rgb(240 143 192));
+  --viz-series-5: light-dark(rgb(155 121 236), rgb(170 145 239));
+  --viz-series-6: light-dark(rgb(58 185 177), rgb(90 203 194));
+
+  /* Internal implementation variables; not part of the agent contract. */
+  --font-sans: -apple-system, system-ui, &quot;Segoe UI&quot;, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;,
+    monospace;
+  --font-size-normal: max(11px, var(--font-size-base));
+  --font-size-tooltip: calc(var(--font-size-base) - 1px);
+  --font-size-small: max(11px, calc(var(--font-size-base) - 2px));
+  --font-size-h1: calc(var(--font-size-normal) * 1.7142857143);
+  --font-size-h2: calc(var(--font-size-normal) * 1.4285714286);
+  --font-size-h3: calc(var(--font-size-normal) * 1.2857142857);
+  --font-weight-normal: 430;
+  --font-weight-medium: 500;
+  --line-height-normal: calc(var(--font-size-normal) * 1.5);
+  --line-height-tooltip: calc(var(--font-size-tooltip) * 1.4285714286);
+  --line-height-small: calc(var(--font-size-small) + 4px);
+  --radius: var(--border-radius-lg, 12.5px);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-2xl: calc(var(--radius) * 1.6);
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px -1px rgb(0 0 0 / 8%);
+  --checkmark-image: url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 17 17&#x27;%3E%3Cpath d=&#x27;M12.8961 3.64101C13.1297 3.41418 13.4984 3.37523 13.7779 3.56581C14.0571 3.75635 14.1554 4.11331 14.0299 4.41347L13.9615 4.53847L7.71151 13.7045C7.59411 13.8767 7.4063 13.9877 7.19881 14.0072C6.99136 14.0267 6.78564 13.9533 6.63826 13.806L2.88826 10.056L2.79842 9.9457C2.6192 9.67407 2.64927 9.30496 2.88826 9.06581C3.12738 8.82669 3.49647 8.79676 3.76815 8.97597L3.8785 9.06581L7.03084 12.2182L12.8053 3.74941L12.8961 3.64101Z&#x27;/%3E%3C/svg%3E&quot;);
+
+  /* Legacy aliases; not part of the current agent contract. */
+  --viz-bg: transparent;
+  --viz-panel: var(--card);
+  --viz-border: var(--border);
+  --viz-text: var(--foreground);
+  --viz-muted: var(--muted-foreground);
+  --viz-accent: var(--primary);
+  --viz-accent-text: var(--primary-foreground);
+  --viz-accent-bg: var(--accent);
+  --viz-font-size: var(--font-size-base);
+  --viz-warning: var(--destructive);
+}
+
+:root[data-theme=&quot;light&quot;] {
+  color-scheme: light;
+}
+
+:root[data-theme=&quot;dark&quot;] {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html &gt; body {
+  /* Preserve MCP aliases for older inline renderers without creating :root cycles. */
+  --color-background-primary: var(
+    --background,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --color-text-primary: var(
+    --foreground,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --color-border-secondary: var(
+    --border,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+
+  margin: 0;
+  padding: 5px;
+  color: var(--foreground);
+  background: transparent !important;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-normal);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+}
+
+a {
+  color: color-mix(in srgb, var(--viz-accent) 80%, var(--viz-text) 20%);
+  cursor: pointer;
+  font-weight: var(--font-weight-medium, 500);
+  text-decoration: none;
+  text-underline-offset: 2px;
+}
+
+a:is(:hover, :focus-visible) {
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 0.5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-block: 0;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.3;
+}
+
+b,
+strong,
+th {
+  font-weight: var(--font-weight-medium);
+}
+
+code:not(pre code) {
+  display: inline;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  corner-shape: superellipse(1.5);
+  background: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  word-break: break-word;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--foreground);
+  font: inherit;
+  text-align: start;
+}
+
+.table :is(th, td) {
+  padding-block: 10px;
+  padding-inline: 0 24px;
+  overflow-wrap: anywhere;
+  border-bottom: 1px solid var(--border);
+  text-align: start;
+  vertical-align: top;
+}
+
+.table-responsive &gt; .table :is(th, td) {
+  overflow-wrap: break-word;
+}
+
+.table :is(th, td):last-child {
+  padding-inline-end: 0;
+}
+
+.table :is(caption, thead th) {
+  font-weight: 600;
+}
+
+.table thead th {
+  padding-block: 8px;
+  border-bottom-color: color-mix(in srgb, var(--foreground) 16%, transparent);
+}
+
+.table tbody tr:last-child :is(th, td) {
+  border-bottom: 0;
+}
+
+.table.table-sm :is(th, td) {
+  padding-block: 6px;
+}
+
+.table.table-sm :is(th, td):not(:last-child) {
+  padding-inline-end: 16px;
+}
+
+.table :is(.text-end, [align=&quot;right&quot;]) {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.table :is(.text-center, [align=&quot;center&quot;]) {
+  text-align: center;
+}
+
+.table .text-nowrap {
+  white-space: nowrap;
+}
+
+#widget {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  background: transparent !important;
+}
+
+.card {
+  min-width: 0;
+  padding: 12px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  border-radius: var(--radius-2xl);
+  corner-shape: superellipse(1.5);
+  color: var(--card-foreground);
+  background: var(--card);
+}
+
+#widget &gt; :not(.card) {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: min(
+    20rem,
+    var(--tooltip-available-width, calc(100vw - 10px)),
+    calc(100vw - 10px)
+  );
+  max-height: min(
+    var(--tooltip-available-height, calc(100vh - 10px)),
+    calc(100vh - 10px)
+  );
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--popover-foreground);
+  background: var(--popover);
+  box-shadow: none;
+  font-size: var(--font-size-tooltip);
+  line-height: var(--line-height-tooltip);
+  overflow-wrap: break-word;
+  white-space: normal;
+  pointer-events: none;
+  user-select: none;
+}
+
+.viz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(180px, 24%), 1fr));
+  gap: 10px;
+}
+
+.viz-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.viz-stat-value {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+.viz-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.viz-badge {
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  color: var(--accent-foreground);
+  background: var(--accent);
+  font-weight: var(--font-weight-medium);
+}
+
+small,
+.text-small,
+.viz-badge {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.viz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.viz-controls &gt; .form-label {
+  display: grid;
+  min-width: min(100%, 260px);
+  flex: 1 1 280px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin-bottom: 0;
+}
+
+.viz-controls &gt; .form-label &gt; :is(.form-control, .form-range, .form-select) {
+  grid-column: 1 / -1;
+}
+
+.btn,
+.form-check-input,
+.form-control,
+.form-range,
+.form-select {
+  font: inherit;
+}
+
+.btn {
+  appearance: button;
+  display: inline-flex;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0 8px;
+  -webkit-app-region: no-drag;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: var(--cursor-interaction, pointer);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn:is(.btn-block, .viz-tile) {
+  inline-size: 100%;
+}
+
+.btn.viz-tile {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+a.btn {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn-primary {
+  border-color: transparent;
+  color: var(--primary-foreground);
+  background: var(--foreground);
+  background-clip: padding-box;
+}
+
+.btn-primary .text-muted {
+  color: color-mix(in srgb, var(--primary-foreground) 50%, transparent);
+}
+
+.btn-primary:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 80%, transparent);
+  background-clip: padding-box;
+}
+
+.btn-ghost {
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.btn-ghost:not(:disabled):hover {
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+[data-lucide] {
+  stroke-width: 1.6;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--foreground);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  padding: 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--foreground);
+  background: var(--secondary);
+}
+
+.form-control::placeholder {
+  color: var(--muted-foreground);
+}
+
+.form-control[type=&quot;file&quot;] {
+  padding: 0;
+  overflow: hidden;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control[type=&quot;file&quot;]::file-selector-button {
+  min-height: 26px;
+  margin-right: 8px;
+  padding: 0 8px;
+  border: 0;
+  border-right: 1px solid var(--input);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: inherit;
+  font: inherit;
+}
+
+.form-control[type=&quot;file&quot;]:not(:disabled):hover::file-selector-button {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-control-color[type=&quot;color&quot;] {
+  width: 40px;
+  height: 28px;
+  padding: 3px;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(var(--radius-lg) - 4px);
+  corner-shape: superellipse(1.5);
+}
+
+textarea.form-control {
+  height: auto;
+  min-height: 72px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+
+.form-control:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-control:disabled,
+.form-select:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.form-select {
+  appearance: none;
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  margin: 0;
+  padding: 0 32px 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--foreground);
+  background-color: var(--secondary);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted-foreground) 50%),
+    linear-gradient(135deg, var(--muted-foreground) 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 10px) 50%;
+  background-repeat: no-repeat;
+  background-size: 4px 4px;
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-select:not(:disabled):hover {
+  background-color: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-select:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-check {
+  display: flex;
+  min-height: 20px;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-check-input {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  margin: 0;
+  border: 1px solid var(--input);
+  color: var(--primary-foreground);
+  background-color: transparent;
+  cursor: var(--cursor-interaction, default);
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    box-shadow 150ms;
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;] {
+  border-color: var(--input);
+  border-radius: var(--radius-sm);
+  corner-shape: superellipse(1.5);
+  background-color: var(--secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input:not(:disabled):not(:checked):hover {
+  background-color: var(--card);
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;]:checked {
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;checkbox&quot;]:checked::before {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-foreground);
+  content: &quot;&quot;;
+  mask: var(--checkmark-image) center / 12px 12px no-repeat;
+}
+
+.form-check-input[type=&quot;radio&quot;] {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+}
+
+.form-check-input[type=&quot;radio&quot;]:checked {
+  border: 2px solid var(--primary);
+  background:
+    radial-gradient(circle, var(--primary-foreground) 0 2.5px, transparent 3px),
+    var(--primary);
+}
+
+.form-check:not(.form-switch) .form-check-input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+}
+
+.form-switch .form-check-input:disabled,
+.form-switch .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.form-check-label {
+  color: var(--foreground);
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-switch .form-check-input {
+  position: relative;
+  width: 32px;
+  height: 20px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  box-shadow: none;
+  transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 1px solid light-dark(var(--primary-foreground), var(--foreground));
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+  box-shadow: var(--shadow-sm);
+  content: &quot;&quot;;
+  transform: translate(2px, -50%);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input:checked {
+  background: var(--primary);
+}
+
+.form-switch .form-check-input:checked::before {
+  transform: translate(14px, -50%);
+}
+
+.form-switch .form-check-input:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.form-range {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 28px;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: 0;
+  accent-color: var(--primary);
+  background: linear-gradient(
+      color-mix(in srgb, var(--foreground) 7%, transparent),
+      color-mix(in srgb, var(--foreground) 7%, transparent)
+    )
+    center / 100% 2px no-repeat;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-webkit-slider-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range::-moz-range-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-moz-range-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.btn:not(.btn-primary, .viz-tile):is(
+    [aria-pressed=&quot;true&quot;],
+    [aria-selected=&quot;true&quot;],
+    .is-selected
+  ) {
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+  background: var(--primary);
+}
+
+.btn.viz-tile:is([aria-pressed=&quot;true&quot;], [aria-selected=&quot;true&quot;], .is-selected) {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#widget &gt; svg {
+  width: 100%;
+}
+
+/* Model-authored chart rules can otherwise stretch icons after these styles load. */
+svg.lucide {
+  display: block;
+  width: 16px !important;
+  height: 16px !important;
+  flex: none;
+  margin: 0 !important;
+  stroke-width: 1.6;
+}
+
+.text-warning,
+.text-destructive {
+  color: var(--destructive);
+}
+
+html&gt;body{padding:0}&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&quot;thaiwater-model&quot; class=&quot;tw-root&quot;&gt;
+  &lt;div class=&quot;tw-tabs&quot; role=&quot;tablist&quot; aria-label=&quot;มุมมองโมเดลข้อมูล&quot;&gt;
+    &lt;button class=&quot;btn tw-tab active&quot; role=&quot;tab&quot; aria-selected=&quot;true&quot; data-tab=&quot;erd&quot;&gt;ERD&lt;/button&gt;
+    &lt;button class=&quot;btn tw-tab&quot; role=&quot;tab&quot; aria-selected=&quot;false&quot; data-tab=&quot;dict&quot;&gt;Data Dictionary&lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;section class=&quot;tw-panel&quot; data-panel=&quot;erd&quot;&gt;
+    &lt;div class=&quot;tw-toolbar&quot;&gt;
+      &lt;div class=&quot;tw-hint&quot;&gt;ลากเพื่อเลื่อน • หมุนล้อหรือใช้ปุ่มเพื่อซูม • คลิกตารางเพื่อดูรายละเอียด&lt;/div&gt;
+      &lt;div class=&quot;tw-controls&quot; aria-label=&quot;ตัวควบคุม ERD&quot;&gt;
+        &lt;button class=&quot;btn&quot; id=&quot;tw-zoom-out&quot; aria-label=&quot;ซูมออก&quot;&gt;−&lt;/button&gt;
+        &lt;output id=&quot;tw-zoom-label&quot; aria-live=&quot;polite&quot;&gt;100%&lt;/output&gt;
+        &lt;button class=&quot;btn&quot; id=&quot;tw-zoom-in&quot; aria-label=&quot;ซูมเข้า&quot;&gt;+&lt;/button&gt;
+        &lt;button class=&quot;btn&quot; id=&quot;tw-reset&quot;&gt;พอดีจอ&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;tw-legend&quot; aria-label=&quot;คำอธิบายสัญลักษณ์&quot;&gt;
+      &lt;span&gt;&lt;i class=&quot;tw-dot pk&quot;&gt;&lt;/i&gt;PK&lt;/span&gt;&lt;span&gt;&lt;i class=&quot;tw-dot fk&quot;&gt;&lt;/i&gt;FK&lt;/span&gt;&lt;span&gt;&lt;i class=&quot;tw-dot view&quot;&gt;&lt;/i&gt;View&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;tw-canvas&quot; id=&quot;tw-canvas&quot;&gt;
+      &lt;svg id=&quot;tw-svg&quot; viewBox=&quot;0 0 1240 780&quot; role=&quot;img&quot; aria-label=&quot;แผนภาพความสัมพันธ์ฐานข้อมูล thaiwater&quot;&gt;
+        &lt;defs&gt;&lt;marker id=&quot;tw-arrow&quot; markerWidth=&quot;8&quot; markerHeight=&quot;8&quot; refX=&quot;7&quot; refY=&quot;4&quot; orient=&quot;auto&quot;&gt;&lt;path d=&quot;M0,0 L8,4 L0,8 Z&quot; class=&quot;tw-arrow&quot;/&gt;&lt;/marker&gt;&lt;/defs&gt;
+        &lt;g id=&quot;tw-stage&quot;&gt;
+          &lt;g class=&quot;tw-links&quot;&gt;
+            &lt;path d=&quot;M250 92 C355 92 355 282 470 282&quot;/&gt;&lt;path d=&quot;M250 232 C360 232 360 307 470 307&quot;/&gt;&lt;path d=&quot;M250 372 C365 372 365 332 470 332&quot;/&gt;
+            &lt;path d=&quot;M250 530 C360 530 360 357 470 357&quot;/&gt;&lt;path d=&quot;M690 310 C765 310 765 178 840 178&quot;/&gt;&lt;path d=&quot;M690 335 C770 335 770 452 840 452&quot;/&gt;
+            &lt;path d=&quot;M250 530 C555 530 555 202 840 202&quot;/&gt;&lt;path d=&quot;M250 530 C555 530 555 476 840 476&quot;/&gt;
+            &lt;path class=&quot;tw-derived&quot; marker-end=&quot;url(#tw-arrow)&quot; d=&quot;M1055 210 C1170 210 1170 610 1055 610&quot;/&gt;&lt;path class=&quot;tw-derived&quot; marker-end=&quot;url(#tw-arrow)&quot; d=&quot;M1055 485 C1130 485 1130 610 1055 610&quot;/&gt;
+          &lt;/g&gt;
+
+          &lt;g class=&quot;tw-node&quot; data-table=&quot;agency&quot; transform=&quot;translate(30 30)&quot;&gt;&lt;rect width=&quot;220&quot; height=&quot;105&quot;/&gt;&lt;text class=&quot;tw-title&quot; x=&quot;14&quot; y=&quot;25&quot;&gt;dbo.agency&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;51&quot;&gt;&lt;tspan class=&quot;tw-key&quot;&gt;PK&lt;/tspan&gt; agency_code&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;76&quot;&gt;agency_name_th&lt;/text&gt;&lt;/g&gt;
+          &lt;g class=&quot;tw-node&quot; data-table=&quot;basin&quot; transform=&quot;translate(30 170)&quot;&gt;&lt;rect width=&quot;220&quot; height=&quot;105&quot;/&gt;&lt;text class=&quot;tw-title&quot; x=&quot;14&quot; y=&quot;25&quot;&gt;dbo.basin&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;51&quot;&gt;&lt;tspan class=&quot;tw-key&quot;&gt;PK&lt;/tspan&gt; basin_code&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;76&quot;&gt;basin_name_th&lt;/text&gt;&lt;/g&gt;
+          &lt;g class=&quot;tw-node&quot; data-table=&quot;province&quot; transform=&quot;translate(30 310)&quot;&gt;&lt;rect width=&quot;220&quot; height=&quot;105&quot;/&gt;&lt;text class=&quot;tw-title&quot; x=&quot;14&quot; y=&quot;25&quot;&gt;dbo.province&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;51&quot;&gt;&lt;tspan class=&quot;tw-key&quot;&gt;PK&lt;/tspan&gt; province_code&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;76&quot;&gt;province_name_th&lt;/text&gt;&lt;/g&gt;
+          &lt;g class=&quot;tw-node&quot; data-table=&quot;quality_flag&quot; transform=&quot;translate(30 460)&quot;&gt;&lt;rect width=&quot;220&quot; height=&quot;130&quot;/&gt;&lt;text class=&quot;tw-title&quot; x=&quot;14&quot; y=&quot;25&quot;&gt;dbo.quality_flag&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;51&quot;&gt;&lt;tspan class=&quot;tw-key&quot;&gt;PK&lt;/tspan&gt; quality_code&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;76&quot;&gt;quality_name_th&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;101&quot;&gt;usable_for_report&lt;/text&gt;&lt;/g&gt;
+
+          &lt;g class=&quot;tw-node&quot; data-table=&quot;station&quot; transform=&quot;translate(470 205)&quot;&gt;&lt;rect width=&quot;220&quot; height=&quot;225&quot;/&gt;&lt;text class=&quot;tw-title&quot; x=&quot;14&quot; y=&quot;25&quot;&gt;dbo.station&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;51&quot;&gt;&lt;tspan class=&quot;tw-key&quot;&gt;PK&lt;/tspan&gt; station_id&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;76&quot;&gt;&lt;tspan class=&quot;tw-unique&quot;&gt;UK&lt;/tspan&gt; station_code&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;101&quot;&gt;station_name_th&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;126&quot;&gt;&lt;tspan class=&quot;tw-foreign&quot;&gt;FK&lt;/tspan&gt; basin_code&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;151&quot;&gt;&lt;tspan class=&quot;tw-foreign&quot;&gt;FK&lt;/tspan&gt; province_code&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;176&quot;&gt;&lt;tspan class=&quot;tw-foreign&quot;&gt;FK&lt;/tspan&gt; agency_code&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;201&quot;&gt;latitude • longitude • datum&lt;/text&gt;&lt;/g&gt;
+
+          &lt;g class=&quot;tw-node&quot; data-table=&quot;station_rule&quot; transform=&quot;translate(840 85)&quot;&gt;&lt;rect width=&quot;215&quot; height=&quot;205&quot;/&gt;&lt;text class=&quot;tw-title&quot; x=&quot;14&quot; y=&quot;25&quot;&gt;dbo.station_rule&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;51&quot;&gt;&lt;tspan class=&quot;tw-key&quot;&gt;PK&lt;/tspan&gt;&lt;tspan class=&quot;tw-foreign&quot;&gt; FK&lt;/tspan&gt; station_id&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;76&quot;&gt;&lt;tspan class=&quot;tw-key&quot;&gt;PK&lt;/tspan&gt; effective_from&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;101&quot;&gt;effective_to&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;126&quot;&gt;riverbed_level_m_msl&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;151&quot;&gt;bank_level_m_msl&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;176&quot;&gt;rule_version&lt;/text&gt;&lt;/g&gt;
+          &lt;g class=&quot;tw-node&quot; data-table=&quot;rainfall_15min&quot; transform=&quot;translate(840 325)&quot;&gt;&lt;rect width=&quot;215&quot; height=&quot;205&quot;/&gt;&lt;text class=&quot;tw-title&quot; x=&quot;14&quot; y=&quot;25&quot;&gt;dbo.rainfall_15min&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;51&quot;&gt;&lt;tspan class=&quot;tw-key&quot;&gt;PK&lt;/tspan&gt; rainfall_id&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;76&quot;&gt;&lt;tspan class=&quot;tw-foreign&quot;&gt;FK&lt;/tspan&gt; station_id&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;101&quot;&gt;&lt;tspan class=&quot;tw-unique&quot;&gt;UK&lt;/tspan&gt; observed_at&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;126&quot;&gt;rainfall_mm&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;151&quot;&gt;&lt;tspan class=&quot;tw-foreign&quot;&gt;FK&lt;/tspan&gt; quality_code&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;176&quot;&gt;received_at&lt;/text&gt;&lt;/g&gt;
+          &lt;g class=&quot;tw-node&quot; data-table=&quot;water_level_hourly&quot; transform=&quot;translate(840 550)&quot;&gt;&lt;rect width=&quot;215&quot; height=&quot;205&quot;/&gt;&lt;text class=&quot;tw-title&quot; x=&quot;14&quot; y=&quot;25&quot;&gt;dbo.water_level_hourly&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;51&quot;&gt;&lt;tspan class=&quot;tw-key&quot;&gt;PK&lt;/tspan&gt; water_level_id&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;76&quot;&gt;&lt;tspan class=&quot;tw-foreign&quot;&gt;FK&lt;/tspan&gt; station_id&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;101&quot;&gt;&lt;tspan class=&quot;tw-unique&quot;&gt;UK&lt;/tspan&gt; observed_at&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;126&quot;&gt;water_level_m_msl&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;151&quot;&gt;discharge_cms • datum&lt;/text&gt;&lt;text x=&quot;14&quot; y=&quot;176&quot;&gt;&lt;tspan class=&quot;tw-foreign&quot;&gt;FK&lt;/tspan&gt; quality_code&lt;/text&gt;&lt;/g&gt;
+          &lt;g class=&quot;tw-node tw-view&quot; data-table=&quot;vw_hourly_situation&quot; transform=&quot;translate(1090 550)&quot;&gt;&lt;rect width=&quot;140&quot; height=&quot;205&quot;/&gt;&lt;text class=&quot;tw-title&quot; x=&quot;12&quot; y=&quot;25&quot;&gt;VIEW&lt;/text&gt;&lt;text x=&quot;12&quot; y=&quot;51&quot;&gt;dbo.&lt;/text&gt;&lt;text x=&quot;12&quot; y=&quot;76&quot;&gt;vw_hourly_&lt;/text&gt;&lt;text x=&quot;12&quot; y=&quot;101&quot;&gt;situation&lt;/text&gt;&lt;text x=&quot;12&quot; y=&quot;136&quot;&gt;station + hour&lt;/text&gt;&lt;text x=&quot;12&quot; y=&quot;161&quot;&gt;10,080 rows&lt;/text&gt;&lt;/g&gt;
+        &lt;/g&gt;
+      &lt;/svg&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;tw-detail&quot; id=&quot;tw-detail&quot; aria-live=&quot;polite&quot;&gt;&lt;strong&gt;เส้นทางที่แนะนำ:&lt;/strong&gt; รวมฝน 15 นาทีเป็นรายชั่วโมงก่อน แล้วจึง join กับระดับน้ำด้วย &lt;code&gt;station_id + report_hour&lt;/code&gt;&lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;section class=&quot;tw-panel&quot; data-panel=&quot;dict&quot; hidden&gt;
+    &lt;div class=&quot;tw-dict-toolbar&quot;&gt;
+      &lt;label for=&quot;tw-search&quot;&gt;ค้นหาตาราง คอลัมน์ หรือความหมาย&lt;/label&gt;
+      &lt;input id=&quot;tw-search&quot; class=&quot;input&quot; type=&quot;search&quot; placeholder=&quot;เช่น rainfall, ระดับน้ำ, FK, datum&quot;&gt;
+      &lt;select id=&quot;tw-table-filter&quot; class=&quot;select&quot; aria-label=&quot;กรองตามตาราง&quot;&gt;&lt;option value=&quot;&quot;&gt;ทุกตาราง&lt;/option&gt;&lt;/select&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;tw-table-wrap&quot;&gt;
+      &lt;table class=&quot;tw-table&quot;&gt;
+        &lt;thead&gt;&lt;tr&gt;&lt;th&gt;ตาราง / Grain&lt;/th&gt;&lt;th&gt;คอลัมน์&lt;/th&gt;&lt;th&gt;ชนิดข้อมูล&lt;/th&gt;&lt;th&gt;Key&lt;/th&gt;&lt;th&gt;Null&lt;/th&gt;&lt;th&gt;ความหมาย / หน่วย&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+        &lt;tbody id=&quot;tw-dict-body&quot;&gt;&lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;tw-result&quot; id=&quot;tw-result&quot; aria-live=&quot;polite&quot;&gt;&lt;/p&gt;
+  &lt;/section&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+#thaiwater-model{color:var(--foreground);font-family:inherit;width:100%}.tw-tabs{display:flex;gap:.5rem;margin-bottom:.75rem}.tw-tab.active{background:var(--primary);color:var(--primary-foreground)}.tw-panel{width:100%}.tw-toolbar,.tw-dict-toolbar{display:flex;align-items:end;justify-content:space-between;gap:.75rem;flex-wrap:wrap;margin-bottom:.5rem}.tw-hint{color:var(--muted-foreground)}.tw-controls{display:flex;align-items:center;gap:.4rem}.tw-controls output{min-width:3.8rem;text-align:center}.tw-legend{display:flex;gap:1rem;margin:.45rem 0;color:var(--muted-foreground)}.tw-legend span{display:flex;align-items:center;gap:.35rem}.tw-dot{width:.7rem;height:.7rem;border-radius:50%;display:inline-block}.tw-dot.pk{background:var(--viz-series-1)}.tw-dot.fk{background:var(--viz-series-2)}.tw-dot.view{background:var(--viz-series-3)}.tw-canvas{height:560px;border:1px solid var(--border);border-radius:.65rem;background:var(--card);overflow:hidden;touch-action:none;cursor:grab}.tw-canvas.dragging{cursor:grabbing}.tw-canvas svg{width:100%;height:100%;display:block}.tw-links path{fill:none;stroke:var(--border);stroke-width:2}.tw-links .tw-derived{stroke:var(--viz-series-3);stroke-dasharray:7 5}.tw-arrow{fill:var(--viz-series-3)}.tw-node{cursor:pointer}.tw-node rect{fill:color-mix(in srgb,var(--card) 90%,var(--viz-series-1) 10%);stroke:var(--border);stroke-width:2;rx:9}.tw-node:hover rect,.tw-node.selected rect{stroke:var(--primary);stroke-width:3}.tw-node text{fill:var(--card-foreground);font-size:14px}.tw-node .tw-title{font-weight:500;font-size:16px}.tw-key{fill:var(--viz-series-1);font-weight:500}.tw-foreign{fill:var(--viz-series-2);font-weight:500}.tw-unique{fill:var(--viz-series-4);font-weight:500}.tw-view rect{fill:color-mix(in srgb,var(--card) 84%,var(--viz-series-3) 16%)}.tw-detail{margin-top:.65rem;padding:.7rem .85rem;border-left:4px solid var(--viz-series-1);background:var(--muted);color:var(--foreground);border-radius:.25rem}.tw-dict-toolbar label{display:flex;flex-direction:column;gap:.3rem;flex:1 1 330px}.tw-dict-toolbar input{width:100%}.tw-dict-toolbar select{min-width:190px}.tw-table-wrap{overflow:auto;max-height:580px;border:1px solid var(--border);border-radius:.65rem}.tw-table{width:100%;border-collapse:collapse;min-width:900px}.tw-table th{position:sticky;top:0;background:var(--card);color:var(--card-foreground);z-index:1;text-align:left}.tw-table th,.tw-table td{padding:.62rem .7rem;border-bottom:1px solid var(--border);vertical-align:top}.tw-table tbody tr:hover{background:var(--muted)}.tw-table code{white-space:nowrap}.tw-grain{display:block;color:var(--muted-foreground);margin-top:.2rem}.tw-badge{display:inline-block;padding:.08rem .38rem;border-radius:999px;background:var(--secondary);color:var(--secondary-foreground);margin-right:.2rem}.tw-result{color:var(--muted-foreground);margin:.55rem 0 0}@media(max-width:600px){.tw-canvas{height:450px}.tw-controls{width:100%;justify-content:flex-end}.tw-dict-toolbar select{width:100%}}
+&lt;/style&gt;
+
+&lt;script&gt;
+(()=&gt;{
+const root=document.getElementById(&#x27;thaiwater-model&#x27;);
+const tables={
+ agency:{grain:&#x27;หนึ่งแถวต่อหน่วยงานเจ้าของข้อมูล&#x27;,note:&#x27;Master data ของหน่วยงานเจ้าของสถานี&#x27;},
+ basin:{grain:&#x27;หนึ่งแถวต่อลุ่มน้ำสังเคราะห์&#x27;,note:&#x27;รหัสและชื่อลุ่มน้ำสำหรับจัดกลุ่มสถานี&#x27;},
+ province:{grain:&#x27;หนึ่งแถวต่อจังหวัดสังเคราะห์&#x27;,note:&#x27;รหัสในชุดเรียน ไม่ใช่รหัสทางการ&#x27;},
+ quality_flag:{grain:&#x27;หนึ่งแถวต่อรหัสคุณภาพ&#x27;,note:&#x27;V/P ใช้รายงานได้ ส่วน S/M ใช้วิเคราะห์คุณภาพข้อมูล&#x27;},
+ station:{grain:&#x27;หนึ่งแถวต่อสถานี&#x27;,note:&#x27;ศูนย์กลางการเชื่อม master data, rule และ observation&#x27;},
+ station_rule:{grain:&#x27;หนึ่งแถวต่อสถานีต่อช่วงที่กฎมีผล&#x27;,note:&#x27;ต้อง join ด้วย station_id และช่วง effective date&#x27;},
+ rainfall_15min:{grain:&#x27;หนึ่งแถวต่อสถานีต่อ 15 นาที&#x27;,note:&#x27;ต้อง aggregate เป็น station-hour ก่อน join ระดับน้ำ&#x27;},
+ water_level_hourly:{grain:&#x27;หนึ่งแถวต่อสถานีต่อชั่วโมง&#x27;,note:&#x27;ระดับน้ำและอัตราการไหลที่ grain รายชั่วโมง&#x27;},
+ vw_hourly_situation:{grain:&#x27;หนึ่งแถวต่อสถานีต่อชั่วโมง&#x27;,note:&#x27;Certified view สำหรับทำรายงาน; logical key คือ station_code + report_hour&#x27;}
+};
+const rows=[
+[&#x27;agency&#x27;,&#x27;agency_code&#x27;,&#x27;varchar(10)&#x27;,&#x27;PK&#x27;,&#x27;No&#x27;,&#x27;รหัสหน่วยงานภายในชุดเรียน&#x27;],[&#x27;agency&#x27;,&#x27;agency_name_th&#x27;,&#x27;nvarchar(200)&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;ชื่อหน่วยงานภาษาไทย&#x27;],
+[&#x27;basin&#x27;,&#x27;basin_code&#x27;,&#x27;char(2)&#x27;,&#x27;PK&#x27;,&#x27;No&#x27;,&#x27;รหัสลุ่มน้ำสังเคราะห์&#x27;],[&#x27;basin&#x27;,&#x27;basin_name_th&#x27;,&#x27;nvarchar(100)&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;ชื่อลุ่มน้ำสังเคราะห์&#x27;],
+[&#x27;province&#x27;,&#x27;province_code&#x27;,&#x27;char(2)&#x27;,&#x27;PK&#x27;,&#x27;No&#x27;,&#x27;รหัสจังหวัดในชุดเรียน&#x27;],[&#x27;province&#x27;,&#x27;province_name_th&#x27;,&#x27;nvarchar(100)&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;ชื่อจังหวัดสังเคราะห์&#x27;],
+[&#x27;quality_flag&#x27;,&#x27;quality_code&#x27;,&#x27;char(1)&#x27;,&#x27;PK&#x27;,&#x27;No&#x27;,&#x27;V=ผ่านตรวจ, P=เบื้องต้น, S=น่าสงสัย, M=ไม่มีข้อมูล&#x27;],[&#x27;quality_flag&#x27;,&#x27;quality_name_th&#x27;,&#x27;nvarchar(100)&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;คำอธิบายสถานะคุณภาพ&#x27;],[&#x27;quality_flag&#x27;,&#x27;usable_for_report&#x27;,&#x27;bit&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;1 ใช้รายงานได้; 0 ใช้เฉพาะวิเคราะห์คุณภาพ&#x27;],
+[&#x27;station&#x27;,&#x27;station_id&#x27;,&#x27;int&#x27;,&#x27;PK&#x27;,&#x27;No&#x27;,&#x27;Surrogate key สำหรับ join&#x27;],[&#x27;station&#x27;,&#x27;station_code&#x27;,&#x27;varchar(20)&#x27;,&#x27;UK&#x27;,&#x27;No&#x27;,&#x27;Business key ที่แสดงต่อผู้ใช้&#x27;],[&#x27;station&#x27;,&#x27;station_name_th&#x27;,&#x27;nvarchar(200)&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;ชื่อสถานีสังเคราะห์&#x27;],[&#x27;station&#x27;,&#x27;basin_code&#x27;,&#x27;char(2)&#x27;,&#x27;FK&#x27;,&#x27;No&#x27;,&#x27;อ้างอิง dbo.basin&#x27;],[&#x27;station&#x27;,&#x27;province_code&#x27;,&#x27;char(2)&#x27;,&#x27;FK&#x27;,&#x27;No&#x27;,&#x27;อ้างอิง dbo.province&#x27;],[&#x27;station&#x27;,&#x27;agency_code&#x27;,&#x27;varchar(10)&#x27;,&#x27;FK&#x27;,&#x27;No&#x27;,&#x27;อ้างอิง dbo.agency&#x27;],[&#x27;station&#x27;,&#x27;latitude&#x27;,&#x27;decimal(9,6)&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;ละติจูด WGS84 จำลอง, decimal degrees&#x27;],[&#x27;station&#x27;,&#x27;longitude&#x27;,&#x27;decimal(9,6)&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;ลองจิจูด WGS84 จำลอง, decimal degrees&#x27;],[&#x27;station&#x27;,&#x27;vertical_datum&#x27;,&#x27;varchar(20)&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;Datum มาตรฐานของสถานี เช่น MSL1915&#x27;],
+[&#x27;station_rule&#x27;,&#x27;station_id&#x27;,&#x27;int&#x27;,&#x27;PK, FK&#x27;,&#x27;No&#x27;,&#x27;สถานีที่กฎใช้; อ้างอิง dbo.station&#x27;],[&#x27;station_rule&#x27;,&#x27;effective_from&#x27;,&#x27;datetime2(0)&#x27;,&#x27;PK&#x27;,&#x27;No&#x27;,&#x27;เวลาเริ่มใช้แบบ inclusive&#x27;],[&#x27;station_rule&#x27;,&#x27;effective_to&#x27;,&#x27;datetime2(0)&#x27;,&#x27;&#x27;,&#x27;Yes&#x27;,&#x27;เวลาสิ้นสุดแบบ exclusive; NULL = ยังมีผล&#x27;],[&#x27;station_rule&#x27;,&#x27;riverbed_level_m_msl&#x27;,&#x27;decimal(7,3)&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;ระดับท้องน้ำ, เมตร MSL&#x27;],[&#x27;station_rule&#x27;,&#x27;bank_level_m_msl&#x27;,&#x27;decimal(7,3)&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;ระดับตลิ่ง, เมตร MSL&#x27;],[&#x27;station_rule&#x27;,&#x27;rule_version&#x27;,&#x27;varchar(40)&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;รุ่นกฎสำหรับ audit และ reproducibility&#x27;],
+[&#x27;rainfall_15min&#x27;,&#x27;rainfall_id&#x27;,&#x27;bigint&#x27;,&#x27;PK&#x27;,&#x27;No&#x27;,&#x27;Surrogate observation key&#x27;],[&#x27;rainfall_15min&#x27;,&#x27;station_id&#x27;,&#x27;int&#x27;,&#x27;UK, FK&#x27;,&#x27;No&#x27;,&#x27;สถานีที่ตรวจวัด; UK ร่วมกับ observed_at&#x27;],[&#x27;rainfall_15min&#x27;,&#x27;observed_at&#x27;,&#x27;datetime2(0)&#x27;,&#x27;UK&#x27;,&#x27;No&#x27;,&#x27;เวลาสิ้นสุดช่วงตรวจวัด เวลาไทย&#x27;],[&#x27;rainfall_15min&#x27;,&#x27;rainfall_mm&#x27;,&#x27;decimal(8,2)&#x27;,&#x27;&#x27;,&#x27;Yes&#x27;,&#x27;ฝนใน 15 นาที, mm; NULL ไม่ใช่ศูนย์&#x27;],[&#x27;rainfall_15min&#x27;,&#x27;quality_code&#x27;,&#x27;char(1)&#x27;,&#x27;FK&#x27;,&#x27;No&#x27;,&#x27;อ้างอิง dbo.quality_flag&#x27;],[&#x27;rainfall_15min&#x27;,&#x27;received_at&#x27;,&#x27;datetime2(0)&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;เวลาที่ระบบได้รับข้อมูล ไม่ใช่เวลาตรวจวัด&#x27;],
+[&#x27;water_level_hourly&#x27;,&#x27;water_level_id&#x27;,&#x27;bigint&#x27;,&#x27;PK&#x27;,&#x27;No&#x27;,&#x27;Surrogate observation key&#x27;],[&#x27;water_level_hourly&#x27;,&#x27;station_id&#x27;,&#x27;int&#x27;,&#x27;UK, FK&#x27;,&#x27;No&#x27;,&#x27;สถานีที่ตรวจวัด; UK ร่วมกับ observed_at&#x27;],[&#x27;water_level_hourly&#x27;,&#x27;observed_at&#x27;,&#x27;datetime2(0)&#x27;,&#x27;UK&#x27;,&#x27;No&#x27;,&#x27;เวลาตรวจวัดรายชั่วโมง เวลาไทย&#x27;],[&#x27;water_level_hourly&#x27;,&#x27;water_level_m_msl&#x27;,&#x27;decimal(7,3)&#x27;,&#x27;&#x27;,&#x27;Yes&#x27;,&#x27;ระดับผิวน้ำ, เมตร MSL&#x27;],[&#x27;water_level_hourly&#x27;,&#x27;discharge_cms&#x27;,&#x27;decimal(10,2)&#x27;,&#x27;&#x27;,&#x27;Yes&#x27;,&#x27;อัตราการไหล, m³/s (cms)&#x27;],[&#x27;water_level_hourly&#x27;,&#x27;vertical_datum&#x27;,&#x27;varchar(20)&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;Datum ของ observation ต้องตรงกับ station&#x27;],[&#x27;water_level_hourly&#x27;,&#x27;quality_code&#x27;,&#x27;char(1)&#x27;,&#x27;FK&#x27;,&#x27;No&#x27;,&#x27;อ้างอิง dbo.quality_flag&#x27;],[&#x27;water_level_hourly&#x27;,&#x27;received_at&#x27;,&#x27;datetime2(0)&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;เวลาที่ระบบได้รับข้อมูล&#x27;],
+[&#x27;vw_hourly_situation&#x27;,&#x27;report_hour&#x27;,&#x27;datetime2(0)&#x27;,&#x27;Logical UK&#x27;,&#x27;No&#x27;,&#x27;ชั่วโมงรายงาน เวลาไทย&#x27;],[&#x27;vw_hourly_situation&#x27;,&#x27;station_code&#x27;,&#x27;varchar(20)&#x27;,&#x27;Logical UK&#x27;,&#x27;No&#x27;,&#x27;รหัสสถานี; key ร่วมกับ report_hour&#x27;],[&#x27;vw_hourly_situation&#x27;,&#x27;station_name_th&#x27;,&#x27;nvarchar(200)&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;ชื่อสถานี&#x27;],[&#x27;vw_hourly_situation&#x27;,&#x27;basin_name_th&#x27;,&#x27;nvarchar(100)&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;ชื่อลุ่มน้ำ&#x27;],[&#x27;vw_hourly_situation&#x27;,&#x27;province_name_th&#x27;,&#x27;nvarchar(100)&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;ชื่อจังหวัด&#x27;],[&#x27;vw_hourly_situation&#x27;,&#x27;agency_name_th&#x27;,&#x27;nvarchar(200)&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;หน่วยงานเจ้าของข้อมูล&#x27;],[&#x27;vw_hourly_situation&#x27;,&#x27;rainfall_1h_mm&#x27;,&#x27;decimal(10,2)&#x27;,&#x27;&#x27;,&#x27;Yes&#x27;,&#x27;ผลรวมฝนที่ใช้ได้ในชั่วโมงนั้น, mm&#x27;],[&#x27;vw_hourly_situation&#x27;,&#x27;reading_count&#x27;,&#x27;bigint&#x27;,&#x27;&#x27;,&#x27;Yes&#x27;,&#x27;จำนวนค่าฝนทั้งหมดในชั่วโมง; ควรเป็น 4&#x27;],[&#x27;vw_hourly_situation&#x27;,&#x27;usable_count&#x27;,&#x27;int&#x27;,&#x27;&#x27;,&#x27;Yes&#x27;,&#x27;จำนวนค่าฝน non-null ที่ใช้รายงานได้&#x27;],[&#x27;vw_hourly_situation&#x27;,&#x27;water_level_m_msl&#x27;,&#x27;decimal(7,3)&#x27;,&#x27;&#x27;,&#x27;Yes&#x27;,&#x27;ระดับน้ำ, เมตร MSL&#x27;],[&#x27;vw_hourly_situation&#x27;,&#x27;discharge_cms&#x27;,&#x27;decimal(10,2)&#x27;,&#x27;&#x27;,&#x27;Yes&#x27;,&#x27;อัตราการไหล, m³/s&#x27;],[&#x27;vw_hourly_situation&#x27;,&#x27;channel_capacity_percent&#x27;,&#x27;decimal(8,2)&#x27;,&#x27;&#x27;,&#x27;Yes&#x27;,&#x27;(ระดับน้ำ−ท้องน้ำ)/(ตลิ่ง−ท้องน้ำ) × 100&#x27;],[&#x27;vw_hourly_situation&#x27;,&#x27;water_situation&#x27;,&#x27;varchar&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;NO_DATA, DATUM_MISMATCH, CRITICAL_LOW, LOW, NORMAL, HIGH, OVER_BANK&#x27;],[&#x27;vw_hourly_situation&#x27;,&#x27;rule_version&#x27;,&#x27;varchar(40)&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;รุ่นกฎที่ใช้ประเมิน&#x27;],[&#x27;vw_hourly_situation&#x27;,&#x27;is_complete&#x27;,&#x27;bit&#x27;,&#x27;&#x27;,&#x27;No&#x27;,&#x27;1 เมื่อฝนครบ 4 ค่า ระดับน้ำใช้ได้ และ datum ตรง&#x27;]
+];
+root.querySelectorAll(&#x27;.tw-tab&#x27;).forEach(b=&gt;b.addEventListener(&#x27;click&#x27;,()=&gt;{root.querySelectorAll(&#x27;.tw-tab&#x27;).forEach(x=&gt;{x.classList.toggle(&#x27;active&#x27;,x===b);x.setAttribute(&#x27;aria-selected&#x27;,x===b)});root.querySelectorAll(&#x27;.tw-panel&#x27;).forEach(p=&gt;p.hidden=p.dataset.panel!==b.dataset.tab)}));
+const stage=root.querySelector(&#x27;#tw-stage&#x27;),canvas=root.querySelector(&#x27;#tw-canvas&#x27;),label=root.querySelector(&#x27;#tw-zoom-label&#x27;);let scale=1,tx=0,ty=0,drag=false,last={x:0,y:0};
+function draw(){stage.setAttribute(&#x27;transform&#x27;,`translate(${tx} ${ty}) scale(${scale})`);label.value=Math.round(scale*100)+&#x27;%&#x27;;label.textContent=label.value}
+function zoom(f,cx=620,cy=390){const ns=Math.max(.45,Math.min(2.5,scale*f));tx=cx-(cx-tx)*(ns/scale);ty=cy-(cy-ty)*(ns/scale);scale=ns;draw()}
+root.querySelector(&#x27;#tw-zoom-in&#x27;).onclick=()=&gt;zoom(1.2);root.querySelector(&#x27;#tw-zoom-out&#x27;).onclick=()=&gt;zoom(1/1.2);root.querySelector(&#x27;#tw-reset&#x27;).onclick=()=&gt;{scale=1;tx=0;ty=0;draw()};
+canvas.addEventListener(&#x27;wheel&#x27;,e=&gt;{e.preventDefault();const r=canvas.getBoundingClientRect();zoom(e.deltaY&lt;0?1.12:1/1.12,(e.clientX-r.left)*1240/r.width,(e.clientY-r.top)*780/r.height)},{passive:false});
+canvas.addEventListener(&#x27;pointerdown&#x27;,e=&gt;{drag=true;last={x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId);canvas.classList.add(&#x27;dragging&#x27;)});canvas.addEventListener(&#x27;pointermove&#x27;,e=&gt;{if(!drag)return;const r=canvas.getBoundingClientRect();tx+=(e.clientX-last.x)*1240/r.width;ty+=(e.clientY-last.y)*780/r.height;last={x:e.clientX,y:e.clientY};draw()});canvas.addEventListener(&#x27;pointerup&#x27;,()=&gt;{drag=false;canvas.classList.remove(&#x27;dragging&#x27;)});
+root.querySelectorAll(&#x27;.tw-node&#x27;).forEach(n=&gt;n.addEventListener(&#x27;click&#x27;,e=&gt;{e.stopPropagation();root.querySelectorAll(&#x27;.tw-node&#x27;).forEach(x=&gt;x.classList.remove(&#x27;selected&#x27;));n.classList.add(&#x27;selected&#x27;);const k=n.dataset.table;root.querySelector(&#x27;#tw-detail&#x27;).innerHTML=`&lt;strong&gt;dbo.${k}&lt;/strong&gt; — ${tables[k].grain}&lt;br&gt;${tables[k].note}`}));
+const filter=root.querySelector(&#x27;#tw-table-filter&#x27;);Object.keys(tables).forEach(k=&gt;{const o=document.createElement(&#x27;option&#x27;);o.value=k;o.textContent=&#x27;dbo.&#x27;+k;filter.appendChild(o)});const body=root.querySelector(&#x27;#tw-dict-body&#x27;),search=root.querySelector(&#x27;#tw-search&#x27;),result=root.querySelector(&#x27;#tw-result&#x27;);
+function esc(s){return String(s).replace(/[&amp;&lt;&gt;&quot;&#x27;]/g,c=&gt;({&#x27;&amp;&#x27;:&#x27;&amp;amp;&#x27;,&#x27;&lt;&#x27;:&#x27;&amp;lt;&#x27;,&#x27;&gt;&#x27;:&#x27;&amp;gt;&#x27;,&#x27;&quot;&#x27;:&#x27;&amp;quot;&#x27;,&quot;&#x27;&quot;:&#x27;&amp;#39;&#x27;}[c]))}
+function render(){const q=search.value.trim().toLowerCase(),f=filter.value;const found=rows.filter(r=&gt;(!f||r[0]===f)&amp;&amp;(!q||r.join(&#x27; &#x27;).toLowerCase().includes(q)||tables[r[0]].grain.toLowerCase().includes(q)));body.innerHTML=found.map((r,i)=&gt;`&lt;tr&gt;&lt;td&gt;${i===0||found[i-1][0]!==r[0]?`&lt;strong&gt;dbo.${esc(r[0])}&lt;/strong&gt;&lt;span class=&quot;tw-grain&quot;&gt;${esc(tables[r[0]].grain)}&lt;/span&gt;`:&#x27;&#x27;}&lt;/td&gt;&lt;td&gt;&lt;code&gt;${esc(r[1])}&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;${esc(r[2])}&lt;/code&gt;&lt;/td&gt;&lt;td&gt;${r[3].split(&#x27;, &#x27;).filter(Boolean).map(x=&gt;`&lt;span class=&quot;tw-badge&quot;&gt;${esc(x)}&lt;/span&gt;`).join(&#x27;&#x27;)}&lt;/td&gt;&lt;td&gt;${esc(r[4])}&lt;/td&gt;&lt;td&gt;${esc(r[5])}&lt;/td&gt;&lt;/tr&gt;`).join(&#x27;&#x27;);result.textContent=`แสดง ${found.length} จาก ${rows.length} คอลัมน์`}
+search.addEventListener(&#x27;input&#x27;,render);filter.addEventListener(&#x27;change&#x27;,render);render();draw();
+})();
+&lt;/script&gt;
+
+&lt;script src=&quot;https://unpkg.com/@floating-ui/core@1.7.3/dist/floating-ui.core.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@floating-ui/dom@1.7.4/dist/floating-ui.dom.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  if (window.FloatingUIDOM == null) {
+    return;
+  }
+  const { autoUpdate, computePosition, flip, offset, shift, size } =
+    window.FloatingUIDOM;
+  const tooltipPlacements = new Set([&quot;top&quot;, &quot;right&quot;, &quot;bottom&quot;, &quot;left&quot;]);
+  const tooltipId = `codex-visualization-tooltip-${
+    window.crypto?.randomUUID?.() ?? Date.now().toString(36)
+  }`;
+  const tooltipGap = 5;
+  const hoverDelay = 700;
+  const skipDelay = 300;
+  let activeTrigger = null;
+  let pendingTrigger = null;
+  let tooltip = null;
+  let openTimeout = null;
+  let autoUpdateCleanup = null;
+  let positionRequest = 0;
+  let skipDelayUntil = 0;
+
+  const getTrigger = (target) =&gt;
+    target?.nodeType === Node.ELEMENT_NODE
+      ? target.closest(&quot;[data-tooltip]&quot;)
+      : null;
+  const containsTarget = (trigger, target) =&gt;
+    target?.nodeType != null &amp;&amp; trigger.contains(target);
+  const getContent = (trigger) =&gt;
+    trigger.getAttribute(&quot;data-tooltip&quot;)?.trim() ?? &quot;&quot;;
+  const getPlacement = (trigger) =&gt; {
+    const placement = trigger.getAttribute(&quot;data-tooltip-placement&quot;);
+    return tooltipPlacements.has(placement) ? placement : &quot;top&quot;;
+  };
+  const getTooltip = () =&gt; {
+    if (tooltip == null) {
+      tooltip = document.createElement(&quot;div&quot;);
+      tooltip.id = tooltipId;
+      tooltip.className = &quot;tooltip&quot;;
+      tooltip.setAttribute(&quot;role&quot;, &quot;tooltip&quot;);
+    }
+    return tooltip;
+  };
+  const setDescribedBy = (trigger, described) =&gt; {
+    const ids = new Set(
+      (trigger.getAttribute(&quot;aria-describedby&quot;) ?? &quot;&quot;)
+        .split(/\s+/)
+        .filter(Boolean),
+    );
+    if (described) {
+      ids.add(tooltipId);
+    } else {
+      ids.delete(tooltipId);
+    }
+    if (ids.size === 0) {
+      trigger.removeAttribute(&quot;aria-describedby&quot;);
+    } else {
+      trigger.setAttribute(&quot;aria-describedby&quot;, [...ids].join(&quot; &quot;));
+    }
+  };
+  const clearOpenTimeout = () =&gt; {
+    if (openTimeout != null) {
+      window.clearTimeout(openTimeout);
+      openTimeout = null;
+    }
+    pendingTrigger = null;
+  };
+  const closeTooltip = (activateSkipDelay = true) =&gt; {
+    clearOpenTimeout();
+    positionRequest += 1;
+    autoUpdateCleanup?.();
+    autoUpdateCleanup = null;
+    if (activeTrigger == null) {
+      return;
+    }
+    setDescribedBy(activeTrigger, false);
+    activeTrigger = null;
+    tooltip?.remove();
+    if (activateSkipDelay) {
+      skipDelayUntil = Date.now() + skipDelay;
+    }
+  };
+  const updatePosition = (trigger, floating) =&gt; {
+    const request = ++positionRequest;
+    void computePosition(trigger, floating, {
+      middleware: [
+        offset(tooltipGap),
+        flip({ padding: tooltipGap }),
+        shift({ padding: tooltipGap }),
+        size({
+          padding: tooltipGap,
+          apply({ availableHeight, availableWidth, elements }) {
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-width&quot;,
+              `${Math.max(0, availableWidth)}px`,
+            );
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-height&quot;,
+              `${Math.max(0, availableHeight)}px`,
+            );
+          },
+        }),
+      ],
+      placement: getPlacement(trigger),
+      strategy: &quot;fixed&quot;,
+    })
+      .then(({ x, y }) =&gt; {
+        if (activeTrigger !== trigger || request !== positionRequest) {
+          return;
+        }
+        const scale = window.devicePixelRatio || 1;
+        floating.style.transform = `translate(${Math.round(x * scale) / scale}px, ${Math.round(y * scale) / scale}px)`;
+        floating.style.visibility = &quot;visible&quot;;
+      })
+      .catch(() =&gt; {
+        if (activeTrigger === trigger &amp;&amp; request === positionRequest) {
+          closeTooltip(false);
+        }
+      });
+  };
+  const openTooltip = (trigger) =&gt; {
+    const content = getContent(trigger);
+    if (!trigger.isConnected || content.length === 0) {
+      return;
+    }
+    clearOpenTimeout();
+    if (activeTrigger === trigger) {
+      return;
+    }
+    closeTooltip();
+    const floating = getTooltip();
+    floating.textContent = content;
+    floating.style.visibility = &quot;hidden&quot;;
+    floating.style.transform = &quot;translate(0, 0)&quot;;
+    document.body.appendChild(floating);
+    activeTrigger = trigger;
+    setDescribedBy(trigger, true);
+    autoUpdateCleanup = autoUpdate(trigger, floating, () =&gt; {
+      updatePosition(trigger, floating);
+    });
+  };
+  const requestOpen = (trigger, immediate = false) =&gt; {
+    if (
+      getContent(trigger).length === 0 ||
+      activeTrigger === trigger ||
+      pendingTrigger === trigger
+    ) {
+      return;
+    }
+    clearOpenTimeout();
+    pendingTrigger = trigger;
+    const delay =
+      immediate || activeTrigger != null || Date.now() &lt; skipDelayUntil
+        ? 0
+        : hoverDelay;
+    if (delay === 0) {
+      openTooltip(trigger);
+      return;
+    }
+    openTimeout = window.setTimeout(() =&gt; {
+      openTimeout = null;
+      pendingTrigger = null;
+      openTooltip(trigger);
+    }, delay);
+  };
+  const handlePointerOpen = (event) =&gt; {
+    if (event.pointerType === &quot;touch&quot;) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    requestOpen(trigger);
+  };
+  const handleLeave = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const handleFocusIn = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger?.matches(&quot;:focus-visible&quot;)) {
+      requestOpen(trigger, true);
+    }
+  };
+  const handleKeyDown = (event) =&gt; {
+    if (event.key === &quot;Escape&quot;) {
+      closeTooltip();
+    }
+  };
+  const handleContextMenu = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const destroy = () =&gt; {
+    closeTooltip(false);
+    document.removeEventListener(&quot;pointerover&quot;, handlePointerOpen);
+    document.removeEventListener(&quot;pointerout&quot;, handleLeave);
+    document.removeEventListener(&quot;focusin&quot;, handleFocusIn);
+    document.removeEventListener(&quot;focusout&quot;, handleLeave);
+    document.removeEventListener(&quot;keydown&quot;, handleKeyDown);
+    document.removeEventListener(&quot;contextmenu&quot;, handleContextMenu);
+    tooltip = null;
+  };
+
+  document.addEventListener(&quot;pointerover&quot;, handlePointerOpen);
+  document.addEventListener(&quot;pointerout&quot;, handleLeave);
+  document.addEventListener(&quot;focusin&quot;, handleFocusIn);
+  document.addEventListener(&quot;focusout&quot;, handleLeave);
+  document.addEventListener(&quot;keydown&quot;, handleKeyDown);
+  document.addEventListener(&quot;contextmenu&quot;, handleContextMenu);
+  window.addEventListener(&quot;pagehide&quot;, destroy, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-lucide&quot; async src=&quot;https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  const initialize = () =&gt; {
+    globalThis.lucide?.createIcons({ attrs: { width: 16, height: 16 } });
+  };
+  if (globalThis.lucide != null) {
+    initialize();
+    return;
+  }
+  document
+    .getElementById(&quot;codex-visualization-lucide&quot;)
+    ?.addEventListener(&quot;load&quot;, initialize, { once: true });
+})();
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+</body>
+</html>

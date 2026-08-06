@@ -8,6 +8,7 @@ Repository นี้ส่งมอบข้อมูลสังเคราะ
 
 | File | Purpose |
 |---|---|
+| `docs/index.html` | Interactive ERD และ Data Dictionary สำหรับผู้เรียน: ซูม เลื่อน คลิก และค้นหาได้ |
 | `mssql/init.sql` | สร้างฐาน `ThaiWaterLab` และปั่น observation ด้วย SQL ให้ report 40,320 rows |
 | `mssql/thaiwater_literal_10080.sql` | Standalone SQL dump ที่มี `INSERT ... VALUES` จริงและ report 10,080 rows |
 | `scripts/generate_literal_sql.py` | สร้าง literal SQL dump ซ้ำแบบ deterministic |
@@ -15,6 +16,17 @@ Repository นี้ส่งมอบข้อมูลสังเคราะ
 | `rag/data_dictionary.md` | Data Dictionary ครบทุก table/view และทุก column |
 | `rag/thaiwater_semantic_contract.md` | Business rules, quality codes และ certified SQL |
 | `tests/acceptance.md` | SQL validation และ expected row counts |
+
+## Interactive ERD และ Data Dictionary
+
+เปิด [`docs/index.html`](docs/index.html) ด้วยเว็บเบราว์เซอร์เพื่อสำรวจโครงสร้างของชุดข้อมูลแบบ interactive:
+
+- ซูมด้วยล้อเมาส์หรือปุ่ม `+` / `−` และลากพื้นที่ว่างเพื่อเลื่อน ERD
+- คลิกตารางเพื่อดู grain และข้อควรระวังในการ join
+- สลับไปที่ Data Dictionary เพื่อค้นหาชื่อตาราง คอลัมน์ key ความหมาย และหน่วย
+- ใช้งานได้ทั้ง light mode, dark mode และหน้าจอขนาดเล็ก
+
+หน้า interactive อ้างอิง schema แบบ `dbo` ของ literal dump ซึ่งเป็นวิธีรันที่แนะนำในหัวข้อถัดไป
 
 ## วิธีรันแบบแนะนำ: Literal SQL dump
 
