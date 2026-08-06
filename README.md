@@ -49,9 +49,19 @@ SELECT COUNT_BIG(*) AS report_rows FROM dbo.vw_hourly_situation;
 
 ## วิธีใช้ข้อมูลอย่างถูกต้อง
 
-ใช้ `dbo.vw_hourly_situation` เป็นทางเข้าหลักสำหรับรายงาน หากเขียน query จาก fact tables เอง ต้อง aggregate ฝน 15 นาทีเป็นรายชั่วโมงก่อน join กับระดับน้ำ มิฉะนั้นระดับน้ำหนึ่งแถวจะถูกทำซ้ำสี่เท่า
+ใช้ `dbo.vw_hourly_situation` เป็นทางเข้าหลักสำหรับรายงานรายสถานี–รายชั่วโมง หาก query จากตารางต้นทางเอง ต้อง aggregate `dbo.rainfall_15min` เป็นหนึ่งแถวต่อสถานีต่อชั่วโมงก่อน join กับ `dbo.water_level_hourly` ด้วย `station_id` และชั่วโมงที่ตรงกัน
 
-เปิด [`docs/index.html`](docs/index.html) ด้วยเว็บเบราว์เซอร์เพื่อสำรวจ ERD และค้นหา Data Dictionary แบบ interactive
+ผลทดสอบกับข้อมูลชุดนี้:
+
+| วิธี query | Rows |
+|---|---:|
+| `dbo.vw_hourly_situation` | 10,080 |
+| Aggregate ฝนรายชั่วโมงก่อน join | 10,080 |
+| Join ฝน 15 นาทีโดยไม่ aggregate | 40,320 |
+
+การ join ฝนดิบโดยไม่ aggregate ทำให้ระดับน้ำแต่ละแถวจับคู่กับข้อมูลฝน 4 แถว และทำให้ผลลัพธ์ถูกทำซ้ำ 4 เท่า
+
+หากต้องการใช้ Interactive ERD และ Data Dictionary ให้ clone หรือดาวน์โหลด repository แล้วเปิด [`docs/index.html`](docs/index.html) ด้วยเว็บเบราว์เซอร์ หรือเผยแพร่โฟลเดอร์ `docs` ผ่าน GitHub Pages การคลิกไฟล์ HTML บนหน้า GitHub โดยตรงจะแสดง source code ไม่ใช่หน้า interactive
 
 ## ชุดข้อมูลขนาดใหญ่สำหรับการทดลองเพิ่มเติม
 
